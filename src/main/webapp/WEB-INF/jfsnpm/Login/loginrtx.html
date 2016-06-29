@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${_res.get("自动登录跳转")}</title>
+</head>
+<body onload="javascript:init();">
+	${_res.get("自动登录跳转")}<br>
+	<OBJECT classid=clsid:5EEEA87D-160E-4A2D-8427-B6C333FEDA4D id=RTXAX></OBJECT>
+</body>
+<script type="text/javascript">
+function init()
+{ 
+    try
+    {
+
+           var objKernalRoot = RTXAX.GetObject("KernalRoot");
+           var objRtcData = objKernalRoot.Sign;
+           var strAccount = objKernalRoot.Account;
+           var strSgin = objRtcData.GetString("Sign");
+           
+           window.location.href="${rootpath}/?userid="+encodeURIComponent(strAccount)+"&token="+encodeURIComponent(strSgin)+
+        		   "&acctoken=${acctoken!}";
+   }
+	catch(e)
+	{
+		document.write("ERROR!<br>仅支持IE浏览器自动登录<br>"+e);
+	}
+}
+</script>
+</html>

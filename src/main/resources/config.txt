@@ -1,0 +1,81 @@
+#Jfinal配置文件
+devMode = true
+site = ${JFSNPM_SITE}
+#主数据库
+databaseUse = master
+#其他数据库以逗号分隔
+#otherDataBase = db1,db2
+
+#数据库配置
+
+master_jdbcClass = com.mysql.jdbc.Driver
+master_jdbcUrl = jdbc:mysql://192.168.1.10:3306/sydb?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+master_user = cmsapp
+master_password = 1uXlbzsOpoB1q2fcls0BQEfimc+8FjBgFzaHradIEi0=
+
+#Jedis连接配置
+jedis_host=127.0.0.1
+jedis_port=6379
+jedis_timeout=2000
+jedis_password=123456
+jedis_database=0
+#jedis_clientname=
+
+#默认网站timeout时间，单位秒
+timeout = 28800
+#单点登录
+SSO=true
+#流程用数据库表单否
+flowSqlForm=true
+
+#默认上传下载文件路径/结尾
+filepath = attachment/img/
+#keyfile位置
+keyfile = ${JFSNPM_FILE_ROOT}/keyfile/jfsnpm/
+
+#WOPI client 服务器地址(以/结尾) 
+#需要搭建自己的服务器
+#wopi_url = http://sg1b-word-view.officeapps.live.com/
+wopi_url = http://svr-mdt/
+
+#snaker相关配置文件
+#config=snaker.xml
+
+#page must config
+jdbc.pageSize=15
+
+#calendar config
+scheduler.repeat = 1
+#scheduler.useCalendar = true
+#scheduler.holidays = 2015-01-01,2015-01-02,2015-01-03
+#scheduler.weeks = 1,2,3,4,5
+#scheduler.workTime = 8:00-17:00
+
+
+#自定义实现类配置,默认已实现,非必须的配置项
+#userimpl=com.jfsnpm.jfsnpm.core.impl.UserImpl
+userRemoteimpl=com.jfsnpm.jfsnpm.core.impl.UserRemoteImpl4demo
+#第三方token认证的实现
+#userThirdimpl=com.jfsnpm.jfsnpm.core.impl.UserThirdImpl
+userThirdimpl=com.jfsnpm.jfsnpm.core.impl.UserThirdOschinaImpl
+#获取SQL的实现
+#sqlimpl=com.jfsnpm.jfsnpm.core.impl.SqlImpl
+#消息接口实现
+#messageimpl=com.jfsnpm.jfsnpm.core.impl.MessageImpl
+#流程参与者实现
+#flowArgsimpl=com.jfsnpm.jfsnpm.core.impl.FlowArgsImpl
+
+
+#Oschina第三方认证
+oschina_client_id=${JFSNPM_OSC_ID}
+oschina_client_secret=${JFSNPM_OSC_SECRET}
+oschina_redirect_uri=${JFSNPM_SITE}
+
+#发送邮件配置
+mail_use = true
+mail_userName = ${JFSNPM_MAIL_USER}
+mail_userPwd = ${JFSNPM_MAIL_PASSWORD}
+mail_host = ${JFSNPM_MAIL_SMTP}
+mail_needAuth = true
+
+

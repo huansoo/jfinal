@@ -1,0 +1,10 @@
+snaker源码修改说明:
+1.SnakerEngineImpl
+	startProcess()
+	startInstanceByExecution()
+	加入初始化表单数据
+2.TaskService
+	getTaskActors()
+	加入自定义的参与者解析处理
+	complete()
+	任务完成后关闭提醒和自动执行

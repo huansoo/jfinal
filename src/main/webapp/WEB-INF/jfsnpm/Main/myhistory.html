@@ -1,0 +1,83 @@
+<#assign datagridid=tool.getuuid()>
+<script type="text/javascript">
+$('#${datagridid!}').datagrid({
+		gridTitle 		: 	'我处理过的流程实例' 	,//[可选] 标题。
+		columns 		: 	[
+		        		  	 		{
+		        		  	 			name:'order_State',
+		        		  	 			label:'状态',
+		        		  	 			align: 'center',
+		        		  	 			width: 80,
+		        		  	 			render: function(value) {
+			        		                switch (value) {
+											case 0:
+												return '<a data-icon="check" class="btn btn-green">完成</a>';
+												break;
+											case 1:
+												return '<a data-icon="spinner" class="btn btn-blue">进行中</a>';
+												break;
+											case 2:
+												return '<a data-icon="close" class="btn btn-red">强制结束</a>';
+												break;
+											default:
+												return '<a data-icon="question" class="btn">未知</a>';
+												break;
+											}
+			        		            }
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'process_name',
+		        		  	 			label:'流程名称',
+		        		  	 			align: 'center',
+		        		  	 			width: 80
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'userName',
+		        		  	 			label:'发起人',
+		        		  	 			align: 'center',
+		        		  	 			width: 80
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'orderTitle',
+		        		  	 			label:'标题',
+		        		  	 			align: 'center',
+		        		  	 			width: 150
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'create_Time',
+		        		  	 			label:'建立日期',
+		        		  	 			align: 'center',
+		        		  	 			width: 100
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'orderId',
+		        		  	 			label:'操作',
+		        		  	 			align: 'center',
+		        		  	 			width: 100,
+		        		  	 			render: function(value) {
+			        		                return '<a href="${rootpath}/Flow/orderView?orderId='+value+'" data-toggle="dialog" data-id="orderview" data-width="850" data-height="750" data-mask="true" data-type="POST" data-title="查看流程实例" data-icon="search" class="btn btn-blue">查看</a>'
+			        		            }
+		        		  	 		}
+			        		       
+		        		    ],
+		dataUrl 		: 	'${rootpath}/Main/myhistory_get' 	,//[可选] Ajax请求数据的URL。
+		//local           : 	'local', // Optional 'local' | 'remote'
+        filterThead 	: 	false 	,//[可选] 允许表格头部快速筛选。普通表格转为datagrid的，需设置dataUrl参数，local = 'remote'
+		sortAll 		: 	true 	,//[可选] 排序范围，true = 所有数据排序， false = 当前页数据排序。普通表格转为datagrid的，默认为true
+		filterAll 		: 	true 	,//[可选] 筛选范围，true = 从所有数据中筛选，false = 从当前页数据中筛选。普通表格转为datagrid的，默认为true
+		filterMult 		: 	false 	,//[可选] 支持多字段筛选。
+		linenumberAll 	: 	true 	,//[可选] 行号范围，true = 为所有数据编号，false = 为当前页数据编号。
+		showTfoot 		: 	false 	,//[可选] 是否显示页脚，适用于显示统计信息，需要字段相关参数支持。
+		showToolbar 	: 	true 	,//[可选] 是否显示工具条，需要设置参数toolbarItem或toolbarCustom。
+		columnFilter 	: 	true 	,//[可选] 表头字段列菜单上出现 “过滤” 选项。
+		editMode 		: 	false,//[可选] 编辑、添加数据的方式，参数[false | 'inline' | 'dialog']。false = 不能编辑，inline = 行内编辑，dialog = 弹窗编辑。
+		width 			: 	'100%' 	,//[可选] datagrid容器宽度，默认为父容器的宽，相当于'100%'。
+		fullGrid 		: 	true 	,//[可选] 使表格铺满网格容器(如果值为true，则需要设置有列宽，并且总宽度小于datagrid容器宽度时有效)。
+		height 			: 	'100%' 	,//[可选] datagrid容器高度。
+		toolbarItem		:	"export",
+		exportOption	:	{type:"file", options:{url:"${rootpath}/Main/myhistory_export"}}
+	});
+</script>
+<div class="bjui-pageContent" style="padding: 0">
+	<table id="${datagridid!}" class="table table-bordered"></table>
+</div>

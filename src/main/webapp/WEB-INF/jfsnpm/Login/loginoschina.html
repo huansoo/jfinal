@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${_res.get("自动登录跳转")}</title>
+</head>
+<body onload="javascript:init();">
+	${_res.get("自动登录跳转")}<br>
+</body>
+<script type="text/javascript">
+function init()
+{
+	window.location.href="http://www.oschina.net/action/oauth2/authorize?client_id="+encodeURIComponent('${client_id!}')+
+			"&redirect_uri="+encodeURIComponent('${redirect_uri!}')+
+			"&response_type=code"+
+        	"&state=${acctoken!}";
+}
+</script>
+</html>

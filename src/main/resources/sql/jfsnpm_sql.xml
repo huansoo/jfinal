@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sqlRoot>
+	<sqlGroup name="jfsnpm">
+		<sql id="demo">
+			SELECT * FROM jfsnpm_menu
+		</sql>
+		<sql id="instertLogs">
+			INSERT INTO jfsnpm_logs(id,userId,url) VALUES (?,?,?)
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="user">
+		<sql id="getUserByUserNo">
+			SELECT * FROM jfsnpm_user WHERE userNo = ?
+		</sql>
+		<sql id="getUserByUserId">
+			SELECT * FROM jfsnpm_user WHERE id = ?
+		</sql>
+		<sql id="checkUser">
+			SELECT * FROM jfsnpm_user WHERE userNo = ? AND password = ? AND status = ?
+		</sql>
+		<sql id="getUserALL">
+			SELECT * FROM jfsnpm_user
+		</sql>
+		<sql id="updatePassword">
+			UPDATE jfsnpm_user SET password = ? WHERE id= ?
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="menu">
+		<sql id="getMenuByUserNo">
+			SELECT a.*
+			FROM
+			(
+			SELECT
+			jfsnpm_menu.id,
+			jfsnpm_menu.pId,
+			jfsnpm_menu.url,
+			jfsnpm_menu.text,
+			jfsnpm_menu.sortNo
+			FROM jfsnpm_menu
+			INNER JOIN jfsnpmr_menu_role ON jfsnpm_menu.id = jfsnpmr_menu_role.menuId
+			INNER JOIN jfsnpmr_role_user ON jfsnpmr_menu_role.roleId = jfsnpmr_role_user.roleId
+			INNER JOIN jfsnpm_user ON jfsnpmr_role_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.userNo = ? AND jfsnpm_menu. STATUS = ?
+			UNION
+			SELECT
+			jfsnpm_menu.id,
+			jfsnpm_menu.pId,
+			jfsnpm_menu.url,
+			jfsnpm_menu.text,
+			jfsnpm_menu.sortNo
+			FROM jfsnpm_menu
+			INNER JOIN jfsnpmr_menu_org ON jfsnpm_menu.id = jfsnpmr_menu_org.menuId
+			INNER JOIN jfsnpmr_org_user ON jfsnpmr_menu_org.orgId = jfsnpmr_org_user.orgId
+			INNER JOIN jfsnpm_user ON jfsnpmr_org_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.userNo = ? AND jfsnpm_menu. STATUS = ?
+			UNION
+			SELECT
+			jfsnpm_menu.id,
+			jfsnpm_menu.pId,
+			jfsnpm_menu.url,
+			jfsnpm_menu.text,
+			jfsnpm_menu.sortNo
+			FROM jfsnpm_menu
+			INNER JOIN jfsnpmr_role_user ON jfsnpmr_role_user.roleId = 'admin'
+			INNER JOIN jfsnpm_user ON jfsnpmr_role_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.userNo = ? AND jfsnpm_menu.STATUS = ? AND jfsnpm_menu.id LIKE '_%'
+			) AS a
+			ORDER BY a.sortNo ASC
+		</sql>
+		<sql id="getMenuTopTen">
+			SELECT a.id,a.url,a.text,COUNT(jfsnpm_logs.id) AS logId
+			FROM
+			(
+			SELECT
+			jfsnpm_menu.id,
+			jfsnpm_menu.pId,
+			jfsnpm_menu.url,
+			jfsnpm_menu.text,
+			jfsnpm_menu.sortNo
+			FROM jfsnpm_menu
+			INNER JOIN jfsnpmr_menu_role ON jfsnpm_menu.id = jfsnpmr_menu_role.menuId
+			INNER JOIN jfsnpmr_role_user ON jfsnpmr_menu_role.roleId = jfsnpmr_role_user.roleId
+			INNER JOIN jfsnpm_user ON jfsnpmr_role_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.id = ? AND jfsnpm_menu.status = '启用'
+			UNION ALL
+			SELECT
+			jfsnpm_menu.id,
+			jfsnpm_menu.pId,
+			jfsnpm_menu.url,
+			jfsnpm_menu.text,
+			jfsnpm_menu.sortNo
+			FROM jfsnpm_menu
+			INNER JOIN jfsnpmr_menu_org ON jfsnpm_menu.id = jfsnpmr_menu_org.menuId
+			INNER JOIN jfsnpmr_org_user ON jfsnpmr_menu_org.orgId = jfsnpmr_org_user.orgId
+			INNER JOIN jfsnpm_user ON jfsnpmr_org_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.id = ? AND jfsnpm_menu.status = '1'
+			) AS a INNER JOIN jfsnpm_logs ON jfsnpm_logs.url = a.id AND jfsnpm_logs.userId = ?
+			AND jfsnpm_logs.id > ?
+			GROUP BY a.id,a.url,a.text
+			ORDER BY COUNT(jfsnpm_logs.id) DESC
+		</sql>
+		<sql id="getMenuALL">
+			SELECT * FROM jfsnpm_menu ORDER BY sortNo ASC
+		</sql>
+		<sql id="getMenuRole">
+			SELECT jfsnpmr_menu_role.menuId,jfsnpmr_menu_role.roleId,jfsnpm_role.name
+			FROM jfsnpmr_menu_role INNER JOIN jfsnpm_role ON jfsnpmr_menu_role.roleId = jfsnpm_role.id
+			WHERE jfsnpmr_menu_role.menuId = ?
+		</sql>
+		<sql id="getMenuClickPie">
+			SELECT Count(jfsnpm_logs.id) AS qty,jfsnpm_menu.text,jfsnpm_menu.id
+			FROM jfsnpm_logs INNER JOIN jfsnpm_menu ON jfsnpm_logs.url = jfsnpm_menu.id
+			WHERE jfsnpm_menu.status = '启用'
+			GROUP BY jfsnpm_menu.id,jfsnpm_menu.text
+			ORDER BY qty DESC
+		</sql>
+		<sql id="getMenuClickLine">
+			SELECT LEFT(jfsnpm_logs.id,8) AS logdate,COUNT(jfsnpm_logs.id) AS logcount
+			FROM jfsnpm_logs
+			GROUP BY LEFT(jfsnpm_logs.id,8)
+			ORDER BY LEFT(jfsnpm_logs.id,8)
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="org">
+		<sql id="getOrgALL">
+			SELECT * FROM jfsnpm_org ORDER BY sortNo ASC
+		</sql>
+		<sql id="getOrg">
+			SELECT * FROM jfsnpm_org WHERE id = ? ORDER BY sortNo ASC
+		</sql>
+		<sql id="getOrgChildren">
+			SELECT * FROM jfsnpm_org WHERE sortNo LIKE ? ORDER BY sortNo ASC
+		</sql>
+		<sql id="getOrgUser">
+			SELECT jfsnpmr_org_user.orgId,jfsnpmr_org_user.userId,jfsnpm_user.userNo,jfsnpm_user.userName
+			FROM jfsnpmr_org_user INNER JOIN jfsnpm_user ON jfsnpmr_org_user.userId = jfsnpm_user.id
+			WHERE jfsnpmr_org_user.orgId = ?
+		</sql>
+		<sql id="getOrgByUser">
+			SELECT jfsnpm_org.id
+			FROM jfsnpmr_org_user INNER JOIN jfsnpm_org ON jfsnpmr_org_user.orgId = jfsnpm_org.id
+			WHERE jfsnpmr_org_user.userId = ?
+			ORDER BY jfsnpm_org.sortNo
+		</sql>
+
+	</sqlGroup>
+	<sqlGroup name="flowprocess">
+		<sql id="getProcessRole">
+			SELECT jfsnpmr_process_role.processId,jfsnpmr_process_role.roleId,jfsnpm_role.name
+			FROM jfsnpmr_process_role INNER JOIN jfsnpm_role ON jfsnpmr_process_role.roleId = jfsnpm_role.id
+			WHERE jfsnpmr_process_role.processId = ?
+		</sql>
+		<sql id="getMyProcess">
+			SELECT distinct wf_process.id,wf_process.name,wf_process.display_Name,wf_process.type,wf_process.instance_Url,wf_process.state,wf_process.content,
+			wf_process.version,wf_process.create_Time,wf_process.creator
+			FROM wf_process INNER JOIN jfsnpmr_process_role ON wf_process.id = jfsnpmr_process_role.processId
+			INNER JOIN jfsnpmr_role_user ON jfsnpmr_process_role.roleId = jfsnpmr_role_user.roleId
+			INNER JOIN jfsnpm_user ON jfsnpmr_role_user.userId = jfsnpm_user.id
+			WHERE jfsnpm_user.id = ?
+		</sql>
+		<sql id="getMyTodo">
+			SELECT wf_task.id, wf_task.order_Id, wf_task.task_Name, wf_task.display_Name, wf_task.task_Type, wf_task.perform_Type,
+			wf_task.operator, wf_task.create_Time, wf_task.finish_Time, wf_task.expire_Time, wf_task.action_Url, wf_task.parent_Task_Id,
+			wf_task.variable, wf_task.version, jfsnpm_ext_wf_order.orderTitle, wf_process.name AS process_name, wf_process.display_Name AS process_display_name,
+			'' AS render_item
+			FROM wf_task INNER JOIN  wf_task_actor ON  wf_task_actor.task_Id =  wf_task.id
+			INNER JOIN  jfsnpm_ext_wf_order ON  wf_task.order_Id =  jfsnpm_ext_wf_order.orderId
+			INNER JOIN  wf_order ON  wf_task.order_Id =  wf_order.id
+			INNER JOIN  wf_process ON  wf_order.process_Id =  wf_process.id
+			WHERE wf_task_actor.actor_Id = ? ORDER BY wf_task.create_Time DESC
+		</sql>
+		<sql id="getMyRelease">
+			SELECT wf_process.display_Name AS process_name,wf_task.display_Name AS task_name,wf_task.create_Time,
+			wf_task.expire_Time,wf_task.order_Id,jfsnpm_user.userName,jfsnpm_ext_wf_order.orderTitle,
+			wf_task.id AS taskId
+			FROM wf_order INNER JOIN wf_task ON wf_task.order_Id = wf_order.id
+			INNER JOIN jfsnpm_ext_wf_order ON wf_task.order_Id = jfsnpm_ext_wf_order.orderId
+			INNER JOIN wf_task_actor ON wf_task_actor.task_Id = wf_task.id
+			INNER JOIN jfsnpm_user ON wf_task_actor.actor_Id = jfsnpm_user.id
+			INNER JOIN wf_process ON wf_order.process_Id = wf_process.id
+			WHERE wf_order.creator = ? ORDER BY wf_task.create_Time DESC
+		</sql>
+		<sql id="getMyHistory">
+			SELECT wf_process.display_Name AS process_name,wf_hist_task.display_Name AS task_name,jfsnpm_ext_wf_order.orderTitle,
+			jfsnpm_ext_wf_order.orderId,wf_hist_order.order_State,jfsnpm_user.userName,wf_hist_order.create_Time
+			FROM wf_hist_task INNER JOIN wf_hist_order ON wf_hist_task.order_Id = wf_hist_order.id
+			INNER JOIN wf_process ON wf_hist_order.process_Id = wf_process.id
+			INNER JOIN jfsnpm_ext_wf_order ON wf_hist_order.id = jfsnpm_ext_wf_order.orderId
+			INNER JOIN jfsnpm_user ON wf_hist_order.creator = jfsnpm_user.id
+			WHERE wf_hist_task.operator = ?
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="role">
+		<sql id="getRoleAll">
+			SELECT * FROM jfsnpm_role
+		</sql>
+		<sql id="getRoleUser">
+			SELECT jfsnpmr_role_user.roleId,jfsnpmr_role_user.userId,jfsnpm_user.userNo,jfsnpm_user.userName
+			FROM jfsnpmr_role_user INNER JOIN jfsnpm_user ON jfsnpmr_role_user.userId = jfsnpm_user.id
+			WHERE jfsnpmr_role_user.roleId = ?
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="flow">
+		<sql id="getHistoryTasks">
+			SELECT wf_hist_task.id,wf_hist_task.order_Id,wf_hist_task.task_Name,wf_hist_task.display_Name,
+			wf_hist_task.task_Type,	wf_hist_task.perform_Type,wf_hist_task.task_State,wf_hist_task.operator,
+			wf_hist_task.create_Time,wf_hist_task.finish_Time,wf_hist_task.expire_Time,wf_hist_task.action_Url,
+			wf_hist_task.parent_Task_Id,wf_hist_task.variable,jfsnpm_user.userName,'处理方式' AS flow_operate,'处理说明' AS flow_operate_mark
+			FROM wf_hist_task INNER JOIN jfsnpm_user ON wf_hist_task.operator = jfsnpm_user.id
+			WHERE order_Id = ?
+			ORDER BY finish_Time
+		</sql>
+		<sql id="updateOrderTitle">
+			UPDATE jfsnpm_ext_wf_order SET orderTitle = ? WHERE orderId = ?
+		</sql>
+		<sql id="getFlowstruct">
+			SELECT * FROM jfsnpm_form_h ORDER BY processName ASC,formName ASC
+		</sql>
+		<sql id="getFormH">
+			SELECT * FROM jfsnpm_form_h WHERE processName = ? AND formName = ?
+		</sql>
+		<sql id="getFlowstructd">
+			SELECT * FROM jfsnpm_form_d WHERE processName = ? AND formName = ? ORDER BY sortNo ASC
+		</sql>
+		<sql id="getFlowstructg">
+			SELECT * FROM jfsnpm_form_g WHERE processName = ? AND formName = ? ORDER BY sortNo ASC
+		</sql>
+		<sql id="getFlowSqlForm">
+			SELECT jfsnpm_form_h.formDisplayName,
+			jfsnpm_form_h.formRejTo,
+			jfsnpm_form_h.formUpdateTitle,
+			jfsnpm_form_h.formUpdateDesc,
+			jfsnpm_form_h.formOperaType1,
+			jfsnpm_form_h.formOperaType2,
+			jfsnpm_form_h.formOperaType3,
+			jfsnpm_form_h.formGridDbName,
+			jfsnpm_form_h.formGridDbKey,
+			jfsnpm_form_h.formGridAuth,
+			jfsnpm_form_h.formAttAuth,
+			jfsnpm_form_d.formColumn,
+			jfsnpm_form_d.formLabel,
+			jfsnpm_form_d.rowYn,
+			jfsnpm_form_d.updateYN,
+			jfsnpm_form_d.editYN,
+			jfsnpm_form_d.requiredYN,
+			jfsnpm_form_d.argsYN,
+			jfsnpm_form_d.type,
+			jfsnpm_form_d.otherArgs,
+			jfsnpm_form_d.defaultValue
+			FROM jfsnpm_form_d INNER JOIN jfsnpm_form_h ON jfsnpm_form_h.processName = jfsnpm_form_d.processName AND jfsnpm_form_h.formName = jfsnpm_form_d.formName
+			WHERE jfsnpm_form_h.processName = ? AND jfsnpm_form_h.formName = ?
+			ORDER BY sortNo ASC
+		</sql>
+		<sql id="getFlowSqlFormG">
+			SELECT * FROM jfsnpm_form_g
+			WHERE processName = ? AND formName = ?
+			ORDER BY sortNo ASC
+		</sql>
+	</sqlGroup>
+
+	<sqlGroup name="business">
+		<sql id="getHistoryTasks">
+			SELECT wf_hist_task.id,wf_hist_task.order_Id,wf_hist_task.task_Name,wf_hist_task.display_Name,
+			wf_hist_task.task_Type,	wf_hist_task.perform_Type,wf_hist_task.task_State,wf_hist_task.operator,
+			wf_hist_task.create_Time,wf_hist_task.finish_Time,wf_hist_task.expire_Time,wf_hist_task.action_Url,
+			wf_hist_task.parent_Task_Id,wf_hist_task.variable,jfsnpm_user.userName,'处理方式' AS flow_operate,'处理说明' AS flow_operate_mark
+			FROM wf_hist_task INNER JOIN jfsnpm_user ON wf_hist_task.operator = jfsnpm_user.id
+			WHERE order_Id = ?
+			ORDER BY finish_Time
+		</sql>
+		<sql id="updateOrderTitle">
+			UPDATE jfsnpm_ext_wf_order SET orderTitle = ? WHERE orderId = ?
+		</sql>
+		<sql id="getCompanyList">
+			SELECT * FROM fst_company ORDER BY timecreated DESC
+		</sql>
+		<sql id="getCompanyByType">
+			SELECT * FROM fst_company where type = ? ORDER BY timecreated DESC
+		</sql>
+		<sql id="getCompanyById">
+			SELECT * FROM fst_company where id = ?
+		</sql>
+		<sql id="getPDangerous">
+			SELECT * FROM fst_dangerous where pcode is NULL
+		</sql>
+		<sql id="getAllDangerous">
+			SELECT * FROM fst_dangerous order by createtime DESC
+		</sql>
+		<sql id="getListByPCode">
+			SELECT * FROM fst_dangerous where pcode = ?
+		</sql>
+		<sql id="getListByCode">
+			SELECT * FROM fst_dangerous where code like ?
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="xzqh">
+		<sql id="getProvinces">
+			SELECT * from xzqh a where a.parent_code is NULL order by id
+		</sql>
+		<sql id="getByParentCode">
+			SELECT * from xzqh a where a.parent_code = ? order by id
+		</sql>
+		<sql id="getByCode">
+			SELECT * from xzqh a where a.xzqh_code = ?
+		</sql>
+	</sqlGroup>
+</sqlRoot>

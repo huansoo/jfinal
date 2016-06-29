@@ -1,0 +1,46 @@
+<div class="bjui-pageContent">
+	<table data-toggle="tablefixed" class="table table-bordered table-hover table-striped table-top">
+		<tr>
+			<th colspan="2">${thisPath}</th>
+		</tr>
+		<tr> 
+			<th width="50%">名称</td>
+			<th width="50%">操作</td>
+		</tr>
+		<tr>
+			<td width="80%"><a href="javascript:void(0)" onclick="reloadthis('${parentPath?replace('\\','\\\\')}');return false;">...</a></td>
+			<td width="20%"></td>
+		</tr>
+		<#if list??>
+			<#list list as item>
+				<tr>
+					<#if item.isDirectory()>
+					<td width="80%"><a href="javascript:void(0)" onclick="reloadthis('${(item.getPath())?replace('\\','\\\\')}');return false;">${item.getName()}</a></td>
+					
+					<td></td>
+					<#else>
+					<td width="80%"><a href="${rootpath}/File/list?path=${(item.getPath())}" onclick="doc_filedownload(this); return false;">${item.getName()}</a></td>
+					<td width="20%">
+					<a type="button" class="btn btn-red" href="${rootpath}/File/listdelete?path=${(item.getPath())}" data-toggle="doajax" data-confirm-msg="确定要删除吗?">删除</a>
+					</td>
+					</#if>
+				</tr>
+			</#list>
+		</#if>
+	</table>
+</div>
+<script type="text/javascript">
+function reloadthis(a) {
+	options = {data:{"path":a}};
+	$.CurrentNavtab.navtab("reload",options);
+}
+function doc_filedownload(a) {
+    $.fileDownload($(a).attr('href'), {
+        failCallback: function(responseHtml, url) {
+            if (responseHtml.trim().startsWith('{')) responseHtml = responseHtml.toObj()
+            $(a).bjuiajax('ajaxDone', responseHtml)
+        }
+    })
+}
+//@ sourceURL=dynamicScript.js
+</script>

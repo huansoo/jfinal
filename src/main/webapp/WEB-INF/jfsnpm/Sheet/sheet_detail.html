@@ -1,0 +1,346 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+<ul class="nav nav-tabs" role="tablist">
+	<li class="active"><a href="#firstSheet" index="1" role="tab" data-toggle="tab">第一联</a></li>
+	<li><a href="#secondSheet" role="tab" data-reload="true" index="2" data-toggle="tab" data-reload="true">第二联</a></li>
+	<li><a href="#thirdSheet" role="tab" data-reload="true" index="3" data-toggle="tab">第三联</a></li>
+	<li><a href="#appendSheet" role="tab" index="4" data-toggle="tab">附件</a></li>
+</ul>
+
+<div class="tab-content">
+
+	<div class="tab-pane fade active in" id="firstSheet">
+		<form id="firstSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="firstSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+				<tr>
+					<!--<td>
+						<label for="j_sheet_info_num" class="control-label x86">信息录入单号：</label>
+						<input type="text" name="sheet.infoNum" id="j_sheet_info_num" value="WDL20160525001" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>-->
+					<td >
+						<label class="control-label x85">录入日期：</label>
+						<input type="text" readonly="true" value="${sheet.linked_list_create_time}" name="linked_list_create_time" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td colspan="2">
+						<label class="control-label x86">联单编号：</label>
+						<input type="text" readonly="true" value="${sheet.linked_list_num}" name="linked_list_num" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">产生单位：</label>
+						<input type="text" readonly="true" value="${sheet.produce_company_name}" name="produce_company_name" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.produce_phone}" name="produce_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.produce_stamp}" name="produce_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.produce_address}" name="produce_address" size="15" class="form-control ok" aria-required="true" style="width: 100px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">运输单位：</label>
+						<input type="text" readonly="true" value="${sheet.transport_company_name}" name="transport_company_name" size="15" class="form-control ok" aria-required="true" style="width: 100px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.transport_phone}" name="transport_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.transport_stamp}" name="transport_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.transport_address}" name="transport_address" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">接受单位：</label>
+						<input type="text" readonly="true" value="${sheet.receive_company_name}" name="receive_company_name" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.receive_phone}" name="receive_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.receive_stamp}" name="receive_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.receive_address}" name="receive_address" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">废物名称：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_name}" name="rubbish_name" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">类别编号：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_type_num}" name="rubbish_type_num" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">&nbsp;&nbsp;数量(kg)：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_num}" name="rubbish_num" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">废物特性：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_features}" name="rubbish_features" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;形&nbsp;&nbsp态&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_pattern}" name="rubbish_pattern" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">包装方式：</label>
+						<input type="text" readonly="true" value="${sheet.rubbish_package_type}" name="rubbish_package_type" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label class="control-label x85" name="transport_destination">外运目的：</label>
+						<input type="text" readonly="true" value="${sheet.transport_destination}" name="transport_destination"  size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">主要危险成分：</label>
+						<input type="text" readonly="true" value="${sheet.main_dangerous}" name="main_dangerous"  size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">禁忌与应急措施：</label>
+						<input type="text" readonly="true" value="${sheet.measures_for_emergency}" name="measures_for_emergency" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">发运人：</label>
+						<input type="text" readonly="true" value="${sheet.shipper}" name="shipper" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">运达地：</label>
+						<input type="text" readonly="true" value="${sheet.destination}" name="destination" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<label  class="control-label x85">转移时间：</label>
+						<input type="text" readonly="true" value="${sheet.transport_begin_time}" name="transport_begin_time" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<!----------------------------------第二联------------------------------>
+	<!----------------------------------第二联------------------------------>
+	<!----------------------------------第二联------------------------------>
+	<div class="tab-pane fade in" id="secondSheet">
+		<form id="secondSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="secondSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+			<tr>
+				<td>
+					<label class="control-label x85">第一承运人：</label>
+					<input type="text" readonly="true" name="first_carrier" value="${sheet.first_carrier}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style=""></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输日期：</label>
+					<input type="text" readonly="true" name="first_carrier_transport_date" value="${sheet.first_carrier_transport_date}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">车(船)型：</label>
+					<input type="text" readonly="true" name="first_vehicle_type" value="${sheet.first_vehicle_type}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label class="control-label x85">牌号：</label>
+					<input type="text" readonly="true" name="first_car_num" value="${sheet.first_car_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x86">道路运输证号：</label>
+					<input type="text" readonly="true" name="first_road_transport_num" value="${sheet.first_road_transport_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输起点：</label>
+					<input type="text" readonly="true" name="first_start_point" value="${sheet.first_start_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">经由地：</label>
+					<input type="text" readonly="true" name="first_via_ground" value="${sheet.first_via_ground}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输终点：</label>
+					<input type="text" readonly="true" name="first_transport_end_point" value="${sheet.first_transport_end_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输人签字：</label>
+					<input type="text" readonly="true" name="first_transport_name" value="${sheet.first_transport_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">第二承运人：</label>
+					<input type="text" readonly="true" name="second_carrier" value="${sheet.second_carrier}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输日期：</label>
+					<input type="text" readonly="true" name="second_carrier_transport_date" value="${sheet.second_carrier_transport_date}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">车(船)型：</label>
+					<input type="text" readonly="true" name="second_vehicle_type" value="${sheet.second_vehicle_type}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label class="control-label x85">牌号：</label>
+					<input type="text" readonly="true" name="second_car_num" value="${sheet.second_car_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x86">道路运输证号：</label>
+					<input type="text" readonly="true" name="second_road_transport_num" value="${sheet.second_road_transport_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输起点：</label>
+					<input type="text" readonly="true" name="second_start_point" value="${sheet.second_start_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">经由地：</label>
+					<input type="text" readonly="true" name="second_via_ground" value="${sheet.second_via_ground}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输终点：</label>
+					<input type="text" readonly="true" name="second_transport_end_point" value="${sheet.second_transport_end_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输人签字：</label>
+					<input type="text" readonly="true" name="second_transport_name" value="${sheet.second_transport_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+			</form>
+	</div>
+
+	<!----------------------------------第3联------------------------------>
+	<!----------------------------------第3联------------------------------>
+	<!----------------------------------第3联------------------------------>
+	<div class="tab-pane fade" id="thirdSheet">
+		<form id="thirdSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="thirdSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+				<tr>
+					<td>
+						<label class="control-label x86">经营许可证号：</label>
+						<input type="text" readonly="true" name="business_license_no" value="${sheet.business_license_no}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">接收人：</label>
+						<input type="text" readonly="true" name="receive_person_name" value="${sheet.receive_person_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">接收日期：</label>
+						<input type="text" readonly="true" name="company_receive_date" value="${sheet.company_receive_date}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<label class="control-label x86">废物处置方式：</label>
+						<input type="text" readonly="true" name="receive_person_name" value="${sheet.receive_person_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x86">单位负责人签字：</label>
+						<input type="text" readonly="true" name="signature_person" value="${sheet.signature_person}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">单位盖章：</label>
+					</td>
+					<td>
+						<label class="control-label x85">接收日期：</label>
+						<input type="text" readonly="true" name="unit_receive_date" value="${sheet.unit_receive_date}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<!----------------------------------附件------------------------------>
+	<!----------------------------------附件------------------------------>
+	<!----------------------------------附件------------------------------>
+	<div class="tab-pane fade " id="appendSheet">
+		<div>
+			<form id="fourthSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+				<input type="hidden" id="fourthSheetId" name="id" value="${sheet.id}"/>
+				<!--<label class="control-label x85">选择附件：</label>-->
+				<div id="sheetAttachmentId" style="display: inline-block; vertical-align: middle;">
+					<input type="hidden" name="attachment_name" value="${sheet.attachment_name}" id="attachment_name_id">
+					<input type="hidden" name="attachment_url" value="${sheet.attachment_url}">
+				</div>
+				<span id="j_custom_span_pic"></span>
+			</form>
+
+		</div>
+	</div>
+	<div class="bjui-pageFooter" style="padding-right: 320px;">
+		<ul>
+			<li><button type="button" class="btn btn-close" data-icon="close"><i class="fa fa-close"></i> 关闭</button></li>
+			<li><button type="button" onclick="printSheet();" class="btn btn-default" data-icon="plus"><i class="fa fa-plus"></i> 打印</button></li>
+		</ul>
+	</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.nav-tabs li a').click(function(){
+			sheet_num = $(this).attr("index");
+			//如果页签为第四页,且文件url不为空
+			if(sheet_num == 4){
+				var attachmentName = $('input[name="attachment_name"]').val();
+				var attachmentUrl = $('input[name="attachment_url"]').val();
+				if(attachmentName != ''&& attachmentName != null){
+					$('#j_custom_span_pic').html('已上传图片：'+attachmentName+'&nbsp;&nbsp;<a href="${rootpath}/Sheet/attachmentOverview?url='+attachmentUrl+'" class="btn btn-default" data-toggle="dialog" data-width="600" data-height="600" data-id="dialog">附件预览</a>')
+				}
+			}
+		})
+
+	});
+	function printSheet(){
+
+	}
+</script>

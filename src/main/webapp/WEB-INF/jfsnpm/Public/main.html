@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>${_res.get("site")}</title>
+<meta name="Keywords" content=""/>
+<meta name="Description" content=""/> 
+<!-- bootstrap - css -->
+<link href="${rootpath}/BJUI/themes/css/bootstrap.min.css" rel="stylesheet">
+<link href="${rootpath}/BJUI/themes/css/FA/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="${rootpath}/BJUI/js/jquery-1.7.2.min.js"></script>
+<!-- bootstrap plugins -->
+<script src="${rootpath}/BJUI/plugins/bootstrap.min.js"></script>
+<!--[if lte IE 7]>
+<link href="${rootpath}/BJUI/themes/css/ie7.css" rel="stylesheet">
+<![endif]-->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lte IE 9]>
+    <script src="${rootpath}/BJUI/other/html5shiv.min.js"></script>
+    <script src="${rootpath}/BJUI/other/respond.min.js"></script>
+<![endif]-->
+<body>
+	<!--[if lte IE 7]>
+        <div id="errorie"><div>您还在使用老掉牙的IE，正常使用系统前请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌 Chrome</a></div></div>
+    <![endif]-->
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="${rootpath}/Public/main">${_res.get("site")}</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="${rootpath}/Public/main"><i class="fa fa-home fa-2x"></i> ${_res.get("主页")}</a></li>
+              <!-- <li><a href="${rootpath}/Public/contact"><i class="fa fa-users fa-2x"></i> ${_res.get("联系我们")}</a></li> -->
+              <li><a href="${rootpath}/Index/main"><i class="fa fa-desktop fa-2x"></i> ${_res.get("内部系统")}</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe fa-2x"></i>  ${_res.get("语言")}<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="?_locale=zh_CN">中文</a></li>
+				  <li><a href="?_locale=en_US">English</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h2>JFSNPM</h2>
+        <p style="font-size:18px;">项目为整合 Jfinal  Snaker  B-jui 的基础项目。适用于OA，后台。</p>
+        <p>
+          <a class="btn btn-default btn-primary" target="_blank" href="http://git.oschina.net/jfinalERP/JfSnPM" role="button">源码 &raquo;</a>
+        </p>
+        <p>
+          <a class="btn btn-default btn-primary" target="_blank" href="http://jfsnpm.sturgeon.mopaas.com" role="button">演示地址 &raquo;</a>
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+</body>
+</html>

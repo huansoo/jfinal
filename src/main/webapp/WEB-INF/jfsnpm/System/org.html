@@ -1,0 +1,164 @@
+<#assign treeid=tool.getuuid()>
+<#assign treedetailid=tool.getuuid()>
+<#assign menuid=tool.getuuid()>
+<#assign menuname=tool.getuuid()>
+<#assign menustatus=tool.getuuid()>
+<#assign treedetailrolegrid=tool.getuuid()>
+<script type="text/javascript">
+$(function(){ 
+	var $panel = $.CurrentNavtab;
+	var $t     = $('#${treeid}');
+	var op     = $t.data();
+	//添加删除按钮INIT
+	var add    = op.addHoverDom ? null : 'edit';
+	var remove = op.removeHoverDom ? null : 'edit';
+	var bR     = op.beforeRemove ? null : 'M_BeforeRemove';
+	var onremove = op.onRemove ? '' : 'M_NodeRemove';
+	$t.data('addHoverDom', add).data('removeHoverDom', remove).data('beforeRemove', bR).data("onRemove",onremove);
+	//拖动INIT
+	var edit   = op.editEnable ? true : true,
+        bDrop  = op.beforeDrop ? '' : 'M_BeforeNodeDrop',
+        onDrop = op.onDrop ? '' : 'M_NodeDrop'; 
+    $t.data('editEnable', edit).data('beforeDrop', bDrop).data('onDrop', onDrop);
+});
+//单击事件
+function ZtreeClick(event, treeId, treeNode) {
+    event.preventDefault()
+    var $detail = $('#${treedetailid}')
+    if ($detail.attr('tid') == treeNode.tId) return
+	if (treeNode.name) $('#${menuname}').val(treeNode.name)
+	
+	if (treeNode.menuid) {
+		$('#${menuid}').val(treeNode.menuid)
+	} else {
+		$('#${menuid}').val('')
+	}
+	if (treeNode.menustatus) {
+		$('#${menustatus}').val(treeNode.menustatus)
+	} else {
+		$('#${menustatus}').val('启用')
+	}
+	$detail.attr('tid', treeNode.tId)
+    $detail.show()
+    
+
+    if(treeNode.menuid!=null&&treeNode.menuid!=""){
+    	$('#${treeid}').bjuiajax('doLoad', {url:"${rootpath}/System/org_user?id="+treeNode.menuid, target:"#${treedetailrolegrid}"})
+    }else{
+    	$('#${treedetailrolegrid}').html("");
+    }
+}
+//保存属性
+function M_Ts_Menu() {
+	var zTree  = $.fn.zTree.getZTreeObj("${treeid}")
+	var menuname   = $('#${menuname}').val()
+	var menuid  = $('#${menuid}').val()
+	var menustatus = $('#${menustatus}').val()
+	if ($.trim(menuname).length == 0) {
+		$("#${treeid}").alertmsg('error', '名称不能为空！');
+		return;
+	}
+	var upNode = zTree.getSelectedNodes()[0]
+	if (!upNode) {
+		$("#${treeid}").alertmsg('error', '未选中任何菜单！');
+        return
+	}
+	upNode.name   = menuname
+	upNode.menuid  = menuid
+	upNode.menustatus = menustatus
+	zTree.updateNode(upNode)
+}
+//删除前事件
+function M_BeforeRemove(treeId, treeNode) {
+    if(treeNode.isParent){
+    	$("#${treeid}").alertmsg('error', '请先删除子菜单！');
+    	return false;
+    }
+    return true
+}
+//删除结束事件
+var menudeleteids = [];
+function M_NodeRemove(event, treeId, treeNode) {
+	if(treeNode.menuid!=null&&treeNode.menuid!=""){
+		menudeleteids.push(treeNode.menuid);
+	}
+}
+//监听拖拽事件
+function M_BeforeNodeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+    /*禁止插入层级为2的节点*/
+    if (moveType == 'inner' && targetNode.level == 6) {
+    	$("#${treeid}").alertmsg('info', '拖拽失败。原因：目录菜单只能有6层！');
+        return false
+    }
+    /*禁止插入剩余层级不足的子节点*/
+    if (moveType == 'inner' && treeNodes[0].isParent) {
+        var molevel = 6 - targetNode.level //剩余层级
+        var maxlevel = 1
+        var zTree = $.fn.zTree.getZTreeObj("${treeid}")
+        var nodes = zTree.transformToArray(treeNodes)
+        var level = nodes[0].level
+        
+        for (var i = 1; i < nodes.length; i++) {
+            if (nodes[i].level == (level + 1)) {
+                maxlevel++
+                level++
+            }
+        }
+        if (maxlevel > molevel) {
+        	$("#${treeid}").alertmsg('info', '拖拽失败。原因：目录菜单只能有6层！');
+            return false
+        }
+    }
+    return true
+}
+//保存菜单
+function savemenu(){
+	var zTree = $.fn.zTree.getZTreeObj("${treeid}")
+    var menus = zTree.getNodes();
+	$("#${treeid}").bjuiajax('doAjax', {url:"${rootpath}/System/org_save", reload:true,confirmMsg:"是否确定需要保存？",data:{'menus':JSON.stringify(menus[0]),"deleteids":JSON.stringify(menudeleteids)}});
+	//menudeleteids = [];
+}
+</script>
+<div class="bjui-pageContent">
+	<div style="float: left; margin: 5px 5px 0; width: 29%;">
+		<fieldset>
+            <button class="btn btn-green" onclick="savemenu();">保存更新</button>
+            <div class="alert alert-info form-inline"><i class="fa fa-info-circle"></i> 可拖拽菜单节点</div>
+			<div class="clearfix">
+				<div style="float: left; width: 99%; height: 630px; overflow: auto;">
+					<ul id="${treeid}" class="ztree" data-toggle="ztree"
+						data-options="{
+							maxAddLevel:6,
+                        	expandAll: true,
+                        	onClick: 'ZtreeClick'}">
+                    <#if menuList??>
+                    	<#list menuList as itemmenu>
+							<li data-id="${itemmenu.orgId!}" data-pid="${itemmenu.pOrgId!}" data-menuid="${itemmenu.orgId!}" data-menustatus="${itemmenu.status!}" 
+												data-menupido="${itemmenu.pOrgId!}" data-menusortnoo="${itemmenu.sortNo!}" 
+												data-nameo="${itemmenu.text!}" data-menustatuso="${itemmenu.status!}" 
+												data-faicon="caret-right">${itemmenu.text!}</li>
+						</#list>
+					</#if>
+					</ul>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div id="${treedetailid}" style="display: none; margin-left: 30%; margin-top: 5px; width: 69%; height: 45px;">
+		<fieldset>
+			<label for="${menuname}" class="control-label x45">名称：</label>
+			<input type="text" class="form-control validate[required] required" id="${menuname}" size="15" placeholder="名称" />
+			<label for="${menustatus}" class="control-label x45">状态：</label>
+			<select class="selectpicker show-tick" id="${menustatus}" data-style="btn-default btn-sel" data-width="auto">
+                <option value="启用">启用</option>
+                <option value="禁用">禁用</option>
+            </select>
+			<input type="hidden" class="form-control" id="${menuid}" size="15" />
+			<button class="btn btn-green" style="margin-left: 20px;" onclick="M_Ts_Menu();">更新到组织树</button>
+		</fieldset>
+	</div>
+	<!-- 角色权限START -->
+    <div id="${treedetailrolegrid}" class="bjui-layout" style="margin-left:30%; width:69%; height:625px; ">
+	</div>
+    <!-- 角色权限END -->
+</div>

@@ -1,0 +1,23 @@
+<div class="bjui-pageContent">
+    <form action="${rootpath}/System/flowstruct_copy_do" data-toggle="validate" method="post">
+        <div class="form-group">
+            <label class="control-label x85">原流程名称：</label>
+            <input readonly="readonly" type="text" name="processName" value="${processName!}" size="22">
+        </div>
+        <div class="form-group">
+            <label class="control-label x85">原表单名称：</label>
+            <input readonly="readonly" type="text" name="formName" value="${formName!}" size="22">
+        </div>
+        <div class="form-group">
+            <label class="control-label x85">新流程名称：</label>
+            <input type="text" data-rule="required" name="processNameN" value="${processName!}"  size="22">
+        </div>
+        <div class="form-group">
+            <label class="control-label x85">新表单名称：</label>
+            <input type="text" data-rule="required" name="formNameN" value="${formName!}"  size="22">
+        </div>
+        <div class="form-group">
+        	<button type="submit" class="btn-default">复制</button>
+        </div>
+    </form>
+</div>

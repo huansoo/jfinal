@@ -1,0 +1,327 @@
+<div class="bjui-pageContent">
+    <form id="company_info_edit_form_id" action="${rootpath}/Business/company_edit" class="pageForm" data-toggle="validate">
+        <input type="hidden" name="dialog.id" value="edce142bc2ed4ec6b623aacaf602a4de">
+        <table class="table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <td colspan="2" align="center">
+                    	<h3>
+                    	<#if operation == 'add'>
+                    	新增企业信息
+                    	<#else>
+                    	编辑企业信息
+                    	</#if>
+                    	</h3>
+                    </td>
+                    <input type="hidden" name="operation" id="operation" value="${operation}">
+                </tr>
+                <tr>
+                	<input type="hidden" name="id" value="${company[0].id}">
+                    <td>
+                        <label for="no" class="control-label x90">项目编号：</label>
+                        <input type="text" name="no" id="no" value="${company[0].no}" data-rule="required">
+                    </td>
+                    <td>
+                        <label for="name" class="control-label x85">企业名称：</label>
+                        <input type="text" name="name" id="name" value="${company[0].name}">
+                    </td>
+                </tr>
+    <!--             <tr>
+					<td colspan="2" align="left">
+						<label class="control-label x90">所在地区：</label>
+						<select name="province" id="province" data-toggle="selectpicker"
+						data-nextselect="#city"
+						data-refurl="${rootpath}/ajax/json_city_{value}.html">
+							<option value="all">--省市--</option> 
+							<option value="北京">北京</option>
+							<option value="上海">上海</option>
+						</select> 
+						<input type="hidden" id="provinceHidden" value="${company[0].province}"> 
+						<select name="city" id="city" data-toggle="selectpicker"
+						data-nextselect="#county"
+						data-refurl="${rootpath}/ajax/json_area_{value}.html"
+						data-emptytxt="--城市--"
+						data-rule="required">
+							<option value="">--城市--</option>
+						</select> 
+						<input type="hidden" id="cityHidden" value="${company[0].city}"> 
+						<select name="county" id="county" data-toggle="selectpicker"
+						data-emptytxt="--区县--"
+						data-rule="required">
+							<option value="">--区县--</option>
+						</select>
+						<input type="hidden" id="countyHidden" value="${company[0].county}"> 
+					</td>
+				</tr>
+				 -->
+				<tr>
+					<td colspan="2" align="left">
+						<label class="control-label x90">所在地区：</label>
+						<select name="province" id="province" data-toggle="selectpicker" data-width="125">
+							<option value="all">--省市--</option> 
+						</select> 
+						<select name="city" id="city" data-toggle="selectpicker" data-width="125">
+							<option value="">--城市--</option>
+						</select> 
+						<select name="county" id="county" data-toggle="selectpicker" data-width="125">
+							<option value="">--区县--</option>
+						</select>
+						<input type="hidden" id="provinceHidden" value="${company[0].province}"> 
+						<input type="hidden" id="cityHidden" value="${company[0].city}">
+						<input type="hidden" id="countyHidden" value="${company[0].county}"> 
+					</td>
+				</tr>
+                <tr>
+                    <td colspan="2">
+                        <label for="address" class="control-label x90">详细地址：</label>
+                        <input type="text" name="address" id="address" value="${company[0].address}" data-rule="required" size="57.6">
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                    	<label for="type" class="control-label x90">企业类型：</label>
+                        <select name="type" id="type" data-toggle="selectpicker" data-width="194">
+                            <option value="">请选择</option>
+                            <option value="产废单位">产废单位</option>
+                            <option value="运输单位">运输单位</option>
+                            <option value="接收单位">接收单位</option>
+                        </select>
+                        <input type="hidden" id="typeHidden" value="${company[0].type}"> 
+                    </td>
+                    <td id="receiveCompany" style="display:none;">
+                    	<label for="receiver" class="control-label x85">接收单位：</label>
+                        <select name="receiver" id="receiver" data-toggle="selectpicker" data-width="194">
+                            <option value="">请选择</option>
+                        </select>
+                        <input type="hidden" id="receiverHidden" value="${company[0].receivecompany}">
+                    </td>
+                </tr>
+                <tr>
+                	<td colspan="2">
+                		<label for="postcode" class="control-label x90">危废种类：</label>
+                        <input type="text" name="custom.dangerous" id="j_custom_profession" value="${company[0].dangerous}" size="57.6" data-toggle="lookup" data-url="${rootpath}/Business/dangerous_select" data-group="custom" data-width="700" data-height="500">
+                	</td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="postcode" class="control-label x90">邮编：</label>
+                        <input type="text" name="postcode" id="postcode" value="${company[0].postcode}" data-rule="required;postcode">
+                    </td>
+                    <td>
+                        <label for="telephone" class="control-label x85">座机：</label>
+                        <input type="text" name="telephone" id="telephone" value="${company[0].telephone}" data-rule="required;tel">
+                    </td>
+                </tr>
+				<tr>
+                    <td>
+                        <label for="mobile" class="control-label x90">电话：</label>
+                        <input type="text" name="mobile" id="mobile" value="${company[0].mobile}" data-rule="required;mobile">
+                    </td>
+                    <td>
+                        <label for="email" class="control-label x85">邮箱：</label>
+                        <input type="text" name="email" id="email" value="${company[0].email}" data-rule="required;email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="legalperson" class="control-label x90">法人：</label>
+                        <input type="text" name="legalperson" id="legalperson" value="${company[0].legalperson}">
+                    </td>
+                    <td>
+                        <label for="ratepayerno" class="control-label x85">纳税人识别号：</label>
+                        <input type="text" name="ratepayerno" id="ratepayerno" value="${company[0].ratepayerno}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="accountowner" class="control-label x90">开户人：</label>
+                        <input type="text" name="accountowner" id="accountowner" value="${company[0].accountowner}">
+                    </td>
+                    <td>
+                        <label for="account" class="control-label x85">账户：</label>
+                        <input type="text" name="account" id="account" value="${company[0].account}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="principal" class="control-label x90">单位负责人：</label>
+                        <input type="text" name="principal" id="principal" value="${company[0].principal}">
+                    </td>
+                    <td>
+                        <label for="timecreated" class="control-label x85">创建时间：</label>
+                        <input type="text" name="timecreated" id="timecreated" value="${company[0].timecreated}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close">关闭</button></li>
+        <li><button type="button" onclick="saveCompanyInfo();" class="btn-default">保存</button></li>
+    </ul>
+</div>
+<script>
+$(document).ready(function(){ 
+	var typeHidden = $("#typeHidden").val();
+    $("#type").val(typeHidden);
+    if("产废单位" == typeHidden){
+    	$("#receiveCompany").css('display','block');
+    	var receiverHidden = $("#receiverHidden").val();
+    	if(receiverHidden != '' || receiverHidden != undefined){
+    		$.ajax({
+    	        url: "${rootpath}/Business/listCompanyByType?type=接收单位",
+    	        global: false,
+    	        type: "GET",
+    	        dataType: "json",
+    	        async: false,
+    	        success: function(msg) {
+    	        	$.each(msg, function (n, value) {  
+    	        		$("#receiver").append("<option value='"+ msg[n].id +"'>"+ msg[n].name +"</option>");
+    	            });  
+    	        	$("#receiver").val(receiverHidden);
+    	        	$('#receiver').selectpicker('refresh');
+    	        }
+    	    });
+    	}
+    }
+
+
+
+    //初始化省份列表
+    initProvince();
+    
+    
+    if($("#operation").val() == 'edit'){
+    	$("#city").attr('data-rule','');
+    	$("#county").attr('data-rule','');
+    	
+    	//渲染省市，县
+    	var provinceHidden = $("#provinceHidden").val();
+    	var cityHidden = $("#cityHidden").val();
+    	var countyHidden = $("#countyHidden").val();
+    	$("#province").val(provinceHidden);
+    	$('#province').selectpicker('refresh');
+    	
+    	//初始化城市
+    	initCity(provinceHidden);
+    	$("#city").val(cityHidden);
+    	$('#city').selectpicker('refresh');
+    	
+    	//初始化区县
+    	initCounty(cityHidden);
+    	$("#county").val(countyHidden);
+    	$('#county').selectpicker('refresh');
+    }
+    
+});
+function saveCompanyInfo(){
+    var params = $('#company_info_edit_form_id').serialize();;
+    $.ajax({
+        type: "POST", //访问WebService使用Post方式请求
+        url: "${rootpath}/Business/company_edit",
+        data: params, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+        dataType: 'json',
+        success: function (result) { //回调函数，result，返回值
+            $(this).alertmsg('ok','保存成功',{mask:true});
+            //关闭当前dialog
+            $(this).dialog('closeCurrent');
+            $('#company', window.parent.document).datagrid('refresh');
+        },
+        error:function(result){
+            $(this).alertmsg('error','保存失败',{mask:true});
+        }
+    });
+}
+$("#type").change(function(){
+	var value = $(this).val();
+	if("产废单位" == value){
+		$.ajax({
+	        url: "${rootpath}/Business/listCompanyByType?type=接收单位",
+	        global: false,
+	        type: "GET",
+	        dataType: "json",
+	        async: false,
+	        success: function(msg) {
+	        	$.each(msg, function (n, value) {  
+	        		$("#receiver").append("<option value='"+ msg[n].id +"'>"+ msg[n].name +"</option>");
+	            });  
+	        	
+	        	$('#receiver').selectpicker('refresh');
+	        }
+	    });
+		$("#receiveCompany").css('display','block');
+	} else {
+		$("#receiveCompany").css('display','none');
+	}
+});
+
+function initProvince(){
+	$.ajax({
+        url: "${rootpath}/Business/getCitys",
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#province").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#province').selectpicker('refresh');
+        }
+    });
+}
+
+function initCity(value){
+	$('#city').empty();
+	$('#city').selectpicker('refresh');
+	$.ajax({
+        url: "${rootpath}/Business/getCitys?code="+value,
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#city").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#city').selectpicker('refresh');
+        }
+    });
+}
+
+function initCounty(value){
+	$('#county').empty();
+	$('#county').selectpicker('refresh');
+	$.ajax({
+        url: "${rootpath}/Business/getCitys?code="+value,
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#county").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#county').selectpicker('refresh');
+        }
+    });
+}
+
+//省份变化修改城市列表
+$("#province").change(function(){
+	var value = $(this).val();
+	initCity(value);
+});
+
+//城市变化修改区县列表
+$("#city").change(function(){
+	var value = $(this).val();
+	initCounty(value);
+});
+
+</script>

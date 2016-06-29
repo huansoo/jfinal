@@ -1,0 +1,62 @@
+<#assign datagridid=tool.getuuid()>
+<script type="text/javascript">
+$('#${datagridid!}').datagrid({
+		gridTitle 		: 	'我的待办事项' 	,//[可选] 标题。
+		columns 		: 	[
+		        		  	 		
+		        		  	 		{
+		        		  	 			name:'process_display_name',
+		        		  	 			label:'流程名称',
+		        		  	 			align: 'center',
+		        		  	 			width: 80
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'render_item',
+		        		  	 			label:'任务名称',
+		        		  	 			align: 'center',
+		        		  	 			width: 100,
+		        		  	 			render: function(value) {
+		        		  	 				var str = value.split(',');
+			        		                return '<a href="${rootpath}/Flow/taskView?taskId='+str[0]+'" data-toggle="dialog" data-id="taskview" data-width="850" data-height="750" data-mask="true" data-type="POST" data-title="处理任务" data-icon="play" class="btn btn-green">'+str[1]+'</a>'
+			        		            }
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'orderTitle',
+		        		  	 			label:'标题',
+		        		  	 			align: 'center',
+		        		  	 			width: 150
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'expire_Time',
+		        		  	 			label:'期望完成时间',
+		        		  	 			align: 'center',
+		        		  	 			width: 100
+		        		  	 		},
+		        		  	 		{
+		        		  	 			name:'create_Time',
+		        		  	 			label:'抵达日期',
+		        		  	 			align: 'center',
+		        		  	 			width: 100
+		        		  	 		}
+			        		       
+		        		    ],
+		dataUrl 		: 	'${rootpath}/Main/mytodo_get' 	,//[可选] Ajax请求数据的URL。
+		local           : 	'local', // Optional 'local' | 'remote'
+        filterThead 	: 	false 	,//[可选] 允许表格头部快速筛选。普通表格转为datagrid的，需设置dataUrl参数，local = 'remote'
+		sortAll 		: 	true 	,//[可选] 排序范围，true = 所有数据排序， false = 当前页数据排序。普通表格转为datagrid的，默认为true
+		filterAll 		: 	true 	,//[可选] 筛选范围，true = 从所有数据中筛选，false = 从当前页数据中筛选。普通表格转为datagrid的，默认为true
+		filterMult 		: 	false 	,//[可选] 支持多字段筛选。
+		linenumberAll 	: 	true 	,//[可选] 行号范围，true = 为所有数据编号，false = 为当前页数据编号。
+		showTfoot 		: 	false 	,//[可选] 是否显示页脚，适用于显示统计信息，需要字段相关参数支持。
+		showToolbar 	: 	false 	,//[可选] 是否显示工具条，需要设置参数toolbarItem或toolbarCustom。
+		columnFilter 	: 	true 	,//[可选] 表头字段列菜单上出现 “过滤” 选项。
+		paging 			: 	{pageSize:${page!5}, selectPageSize:'15,30,60,100', pageCurrent:1, showPagenum:5, total:0} 	,//[可选] 是否显示分页组件，可设置分页参数。分页参数模板：{pageSize:30, selectPageSize:'30,60,90', pageCurrent:1, showPagenum:5}
+		editMode 		: 	false,//[可选] 编辑、添加数据的方式，参数[false | 'inline' | 'dialog']。false = 不能编辑，inline = 行内编辑，dialog = 弹窗编辑。
+		width 			: 	'100%' 	,//[可选] datagrid容器宽度，默认为父容器的宽，相当于'100%'。
+		fullGrid 		: 	true 	,//[可选] 使表格铺满网格容器(如果值为true，则需要设置有列宽，并且总宽度小于datagrid容器宽度时有效)。
+		height 			: 	'100%' 	//,//[可选] datagrid容器高度。
+	});
+</script>
+<div class="bjui-pageContent" style="padding: 0">
+	<table id="${datagridid!}" class="table table-bordered"></table>
+</div>

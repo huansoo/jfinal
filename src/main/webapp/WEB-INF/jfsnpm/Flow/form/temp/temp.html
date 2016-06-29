@@ -1,0 +1,115 @@
+<#assign thisformid=tool.getuuid()>
+<#assign thisformoperationid=tool.getuuid()>
+
+<div class="bjui-pageContent">
+    <div data-layout-h="0">
+        <div  style="padding-left:0px;padding-right:0px;">
+
+<div class="bjui-pageHeader" style="font-weight:700;font-size:16px;text-align: center;border-left: 1px solid gray;border-right: 1px solid gray;border-top:1px solid gray;">
+	协作单
+</div>
+<div style="border-left: 1px solid gray;border-right: 1px solid gray;border-bottom:1px solid gray;">
+        <#if (formdata)?exists>
+			    <form id="${thisformid!}" action="${rootpath}/Flow/form_save"  class="pageForm" data-toggle="validate" data-reload="true">
+			        <input type="hidden" name="__id" value="${formdata.id!}"><!-- 表单的ID -->
+			        <input type="hidden" name="__orderid" value="${orderid!}"><!-- 流程实例ID -->
+			        <input type="hidden" name="__taskid" value="${taskid!}"><!-- 任务ID -->
+			        <input type="hidden" name="__formpath" value="${formpath!}"><!-- 任务路径 -->
+			        <input type="hidden" name="__ordertitlecolname" value=""><!-- 用此列名更新实例标题 -->
+			        <input type="hidden" name="__argscolname" value=""><!-- 写入流程参数MAP的列名，逗号分隔 -->
+			        <input type="hidden" name="__flowoperationdesc" value=""><!-- 写入处理说明的列 -->
+			        <input type="hidden" name="__rejto" value=""><!-- 指定退回到task，留空退回上一步 -->
+			        <div class="pageFormContent">
+			            <table class="table table-condensed table-hover" width="100%">
+			                <tbody>
+			                	<tr>
+			                		<td >
+			                            <label class="control-label x70">发起时间：</label>
+			                            <input type="text" value="${formdata.pm_create_time!}" readonly size="22">
+			                        </td>
+			                        <td>
+			                            <label  class="control-label x70">发起人：</label>
+			                            <input type="text" value="${formdata.userName!}" readonly size="22">
+			                        </td>
+			                	</tr>
+			                	<!-- 添加具体表单 -->
+			                	<!-- 添加具体表单 -->
+			                    <tr>
+			                    	<td>
+			                    		<ul>
+			                    		<input type="hidden" id="${thisformoperationid!}" name="__flowoperation">
+			                    		
+			                    		<li style="padding-left:4px;padding-right:4px;" class="pull-right"><button type="button" onclick="submitform('转发')" class="btn-orange" data-icon="share">转发</button></li>
+			                    		
+			                    		<li style="padding-left:4px;padding-right:4px;" class="pull-right"><button type="button" onclick="submitform('退回')" class="btn-red" data-icon="close">退回</button></li>
+			                    		
+			                    		<li style="padding-left:4px;padding-right:4px;" class="pull-right"><button type="button" onclick="submitform('同意')" class="btn-green" data-icon="check">同意</button></li>
+			                    		
+			                			<li style="padding-left:4px;padding-right:4px;" class="pull-right"><button type="button" onclick="submitform('保存')" class="btn-blue" data-icon="save">保存</button></li>
+			            				</ul>
+			                    	</td>
+			                    	<td>
+			                    		<label class="control-label x70">转发给：</label>
+			                    		<input type="hidden"  name="__tousers" size="10">
+			                    		<input type="text" size="22" readonly data-toggle="lookup" data-url="${rootpath}/Lookup/user?id=__tousers&userName=__tousersname&add=add" name="__tousersname">
+			                    		<ul>
+			                			<li class="pull-right"><a href="${rootpath}/Snaker/orderview?orderid=${orderid}" data-toggle="dialog" data-id="snakerorderview" 
+                        					data-width="980" data-height="780" data-mask="true" data-type="POST" 
+                        					data-title="流程实例流程图" class="btn btn-blue">查看流程图</a></li>
+			            				</ul>
+			                    	</td>
+			                    </tr>
+			                </tbody>
+			            </table>
+			        </div>
+			        <div >
+			            
+			        </div>
+			    </form>
+	    </#if>
+<script>
+function submitform(operation)
+{
+	$('#${thisformoperationid!}').val(operation);
+	$('#${thisformid!}').isValid(function(v){
+    	if(v){
+    		$('#${thisformid!}').bjuiajax('ajaxForm')
+    	}
+	});
+}
+</script>
+</div>
+
+
+
+</div>
+        <div  style="padding-left:0px;padding-right:0px;padding-top: 5px;">
+        	<!-- 历史任务List -->
+        	<table class="table table-bordered table-hover">
+        		<thead>
+        			<tr>
+        				<th colspan="5" style="text-align: center;">历史任务</th>
+        			</tr>
+        			<tr>
+        				<th width="180px" align="center">时间</th>
+        				<th width="100px" align="center">任务名称</th>
+        				<th width="50px" align="center">处理人</th>
+        				<th width="70px" align="center">处理结果</th>
+        				<th align="center">处理说明</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<#list historyTasks as item>
+        			<tr>
+        				<td align="center">${(item.finish_Time)!}</td>
+        				<td align="center">${(item.display_Name)!}</td>
+        				<td align="center">${(item.userName)!}</td>
+        				<td align="center" class="<#if item.flow_operate='转发'>info<#elseif item.flow_operate='退回' || item.flow_operate='不同意'>danger<#else>success</#if>">${(item.flow_operate)!}</td>
+        				<td>${(item.flow_operate_mark)!}</td>
+        			</tr>
+        			</#list>
+        		</tbody>
+        	</table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+	<div class="bjui-pageContent">
+		<form id="sheetNumForm" action="${rootpath}/Sheet/linkedListNumEdit" data-toggle="validate">
+			<input type="hidden" id="thirdSheetId" name="id" value="${sheetnum.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+				<tr>
+					<td>
+						<label class="control-label x85">行政区划：</label>
+						<select id="countSelectId" name="area_code" data-width="150" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+						</select>
+					</td>
+					<td>
+						<label class="control-label x85">分配数目：</label>
+						<select name="linked_list_num" data-width="150" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="60">60</option>
+							<option value="80">80</option>
+							<option value="100">100</option>
+							<option value="150">150</option>
+							<option value="200">200</option>
+							<option value="300">300</option>
+							<option value="500">500</option>
+						</select>
+					</td>
+				</tr>
+				<!--<tr>
+					<td>
+						<label class="control-label x85">编号区间：</label>
+						<input type="text" name="business_license_no" value="${sheet.business_license_no}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>-->
+				</tbody>
+			</table>
+		</form>
+	</div>
+	<div class="bjui-pageFooter" style="padding-right: 220px;">
+		<ul>
+			<li><button type="button" class="btn btn-close" data-icon="close"><i class="fa fa-close"></i> 关闭</button></li>
+			<li><button type="button" class="btn btn-default" onclick="saveSheetNum();" data-icon="save"><i class="fa fa-save"></i> 保存</button></li>
+		</ul>
+	</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+	var sheet_num = 1;
+	$(function(){
+		//初始化selectpicker
+		$('.selectpicker').selectpicker({
+			style: 'btn-info',
+			size: 4
+		});
+
+
+		$.ajax({
+			url: "${rootpath}/Business/getCitys?code=131000",//因为本系统针对廊坊市股code为1310
+			global: false,
+			type: "GET",
+			dataType: "json",
+			async: false,
+			success: function(msg) {
+				$.each(msg, function (n, value) {
+					$("#countSelectId").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+				});
+
+				$('#countSelectId').selectpicker('refresh');
+			}
+		});
+
+	});
+	function saveSheetNum(){
+		var params = $('#sheetNumForm').serialize();;
+		$.ajax({
+			type: "POST", //访问WebService使用Post方式请求
+			url: "${rootpath}/Sheet/linkedListNumEdit",
+			data: params, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				$(this).alertmsg('ok','保存成功',{mask:true});
+				//关闭当前dialog
+				$(this).dialog('closeCurrent');
+				$('#sheet_num_list_datagrid_id', window.parent.document).datagrid('refresh');
+			},
+			error:function(result){
+				$(this).alertmsg('error','保存失败',{mask:true});
+			}
+		});
+	}
+
+</script>

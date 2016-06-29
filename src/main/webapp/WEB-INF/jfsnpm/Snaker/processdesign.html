@@ -1,0 +1,82 @@
+<#assign snakerflow=tool.getuuid()>
+<script type="text/javascript">
+function processviewinit(){
+	var json="${process!}";
+	var model;
+	if(json) {
+		//json.replace(new RegExp("@@","gm"), "\"")
+		model=eval("(" + json + ")");
+	} else {
+		model="";
+	}
+	$('#${snakerflow}').snakerflow($.extend(true,{
+		basePath : "${rootpath}/snaker/",
+        ctxPath : "${rootpath}",
+		tipId : "",
+        restore : model,
+		editable : true,
+		dragable : true,
+		tools : {
+			save : {
+				onclick : function(data) {
+					saveModel(data);
+				}
+			}
+		}
+	},eval("({'activeRects':{'rects':''},'historyRects':{'rects':''}})")));
+}
+function saveModel(data) {
+	//保存流程图
+	$("#${snakerflow}").bjuiajax('doAjax', {url:"${rootpath}/Snaker/deploy_string",confirmMsg:"是否确定需要保存？",data:{'model':data,"processid":"${processid}"}});
+}
+
+processviewinit();
+</script>
+<div class="bjui-pageContent">
+	<div id="toolbox">
+	<div id="toolbox_handle">工具集</div>
+	<div class="node" id="save"><img src="${rootpath}/snaker/images/save.gif" />&nbsp;&nbsp;保存</div>
+	<hr />
+	<div class="node">
+		<img src="${rootpath}/snaker/images/save.gif" />
+		<a href="${rootpath}/Snaker/saveasfile?processid=${processid}" target="_blank">&nbsp;&nbsp;另存为</a>
+	</div>
+	<div>
+	<hr />
+	</div>
+	<div class="node selectable" id="pointer">
+	    <img src="${rootpath}/snaker/images/select16.gif" />&nbsp;&nbsp;Select
+	</div>
+	<div class="node selectable" id="path">
+	    <img src="${rootpath}/snaker/images/16/flow_sequence.png" />&nbsp;&nbsp;transition
+	</div>
+	<div>
+	<hr/>
+	</div>
+	<div class="node state" id="start" type="start"><img
+		src="${rootpath}/snaker/images/16/start_event_empty.png" />&nbsp;&nbsp;start</div>
+	<div class="node state" id="end" type="end"><img
+		src="${rootpath}/snaker/images/16/end_event_terminate.png" />&nbsp;&nbsp;end</div>
+	<div class="node state" id="task" type="task"><img
+		src="${rootpath}/snaker/images/16/task_empty.png" />&nbsp;&nbsp;task</div>
+	<div class="node state" id="task" type="custom"><img
+		src="${rootpath}/snaker/images/16/task_empty.png" />&nbsp;&nbsp;custom</div>
+	<div class="node state" id="task" type="subprocess"><img
+		src="${rootpath}/snaker/images/16/task_empty.png" />&nbsp;&nbsp;subprocess</div>
+	<div class="node state" id="fork" type="decision"><img
+		src="${rootpath}/snaker/images/16/gateway_exclusive.png" />&nbsp;&nbsp;decision</div>
+	<div class="node state" id="fork" type="fork"><img
+		src="${rootpath}/snaker/images/16/gateway_parallel.png" />&nbsp;&nbsp;fork</div>
+	<div class="node state" id="join" type="join"><img
+		src="${rootpath}/snaker/images/16/gateway_parallel.png" />&nbsp;&nbsp;join</div>
+	</div>
+	
+	<div id="properties">
+		<div id="properties_handle">属性</div>
+		<table class="properties_all" cellpadding="0" cellspacing="0">
+		</table>
+		<div>&nbsp;</div>
+	</div>
+
+	<div id="${snakerflow}"></div>
+</div>

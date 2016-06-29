@@ -1,0 +1,17 @@
+<div class="bjui-pageContent">
+	<div class="row" style="margin-left: 5px; margin-right: 5px;">
+		<div class="col-md-6" style="mini-width: 800px; height: 300px" data-toggle="echarts"
+				data-theme="macarons" data-type="bar,line"
+				data-url="${rootpath}/Main/menuClickLine"></div>
+		<div class="col-md-6" style="mini-width: 800px; height: 300px" data-toggle="echarts"
+				data-theme="macarons" data-type="pie"
+				data-url="${rootpath}/Main/menuClickPie"></div>
+	</div>
+	<div class="row" style="margin: 10px;">
+		<div class="col-xs-3"><a style="width:100%;height:50px;" class="btn btn-green" data-toggle="navtab" data-url="${rootpath}/Main/mytodopage" data-id="mytodo" data-title = '${_res.get("待办任务")}'><i class="fa fa-bell" style="font-size: 26px;padding-top: 8px;">  ${_res.get("待办任务")}</i></a></div>
+		<div class="col-xs-3"><a style="width:100%;height:50px;" class="btn btn-green" data-toggle="navtab" data-url="${rootpath}/Main/myrelease" data-id="myrelease" data-title = '${_res.get("流程进度")}'><i class="fa fa-tasks" style="font-size: 26px;padding-top: 8px;">  ${_res.get("流程进度")}</i></a></div>
+		<div class="col-xs-3"><a style="width:100%;height:50px;" class="btn btn-green" data-toggle="navtab" data-url="${rootpath}/Main/myhistory" data-id="myhistory" data-title = '${_res.get("流程历史")}'><i class="fa fa-history" style="font-size: 26px;padding-top: 8px;">  ${_res.get("流程历史")}</i></a></div>
+		<div class="col-xs-3"><a style="width:100%;height:50px;" class="btn btn-green" data-toggle="navtab" data-url="${rootpath}/Main/process" data-id="process" data-title = '${_res.get("启动流程")}'><i class="fa fa-send" style="font-size: 26px;padding-top: 8px;">  ${_res.get("启动流程")}</i></a></div>
+	</div>
+    <div id="mytodo" data-toggle="autoajaxload" data-url="${rootpath}/Main/mytodo" style="height: 30%;"></div>
+</div>

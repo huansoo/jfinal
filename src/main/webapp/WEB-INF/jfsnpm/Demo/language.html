@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>国际化资源切换</title>
+</head>
+<body>
+	<a href="?_locale=zh_CN">中文</a>
+	<a href="?_locale=en_US">English</a>
+	<br>
+	两种使用方式：
+	<BR>
+	1.直接获取国际资源文件的数据 ${r'${_res.get("欢迎")}'}
+	<br>
+	${_res.get("欢迎")}
+	<br>
+	2.根据参数格式化相应的数据 ${r'${_res.format("测试用","密码")}'}
+	<BR>
+	${_res.format("msg","密码")}
+</body>
+<script type="text/javascript">
+
+</script>
+</html>

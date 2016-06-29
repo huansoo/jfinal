@@ -1,0 +1,201 @@
+<div class="bjui-pageContent">
+    <form id="system_user_form_edit_id" action="${rootpath}/System/user_edit" class="pageForm" data-toggle="validate">
+        <input type="hidden" name="dialog.id" value="edce142bc2ed4ec6b623aacaf602a4de">
+        <table class="table table-condensed table-hover">
+            <tbody>
+                <tr>
+                    <td colspan="2" align="center">
+                    	<h3>
+                    	<#if operation == 'add'>
+                    	新增用户信息
+                    	<#else>
+                    	编辑用户信息
+                    	</#if>
+                    	</h3>
+                    </td>
+                    <input type="hidden" name="operation" id="operation" value="${operation}">
+                </tr>
+                <tr>
+                	<input type="hidden" name="id" value="${company[0].id}">
+                    <input type="hidden" id="admin" value="${company[0].userNo}">
+                    <td>
+                        <label for="userNo" class="control-label x100">登录名：</label>
+                        <input type="text" name="userNo" id="userNo" value="${company[0].userNo}" data-rule="required">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="userName" class="control-label x100">名称：</label>
+                        <input type="text" name="userName" id="userName" value="${company[0].userName}">
+                    </td>
+                </tr>
+				<tr>
+					<td>
+						<label class="control-label x100">所在地区：</label>
+						<select name="province" id="province" data-toggle="selectpicker" data-width="125" disabled>
+							<option value="130000">河北省</option> 
+						</select> 
+						<select name="city" id="city" data-toggle="selectpicker" data-width="125" disabled>
+							<option value="131000">廊坊市</option>
+						</select> 
+						<select name="county" id="county" data-toggle="selectpicker" data-width="125">
+							<option value="">--区县--</option>
+						</select>
+						<input type="hidden" id="provinceHidden" value="${company[0].province}"> 
+						<input type="hidden" id="cityHidden" value="${company[0].city}">
+						<input type="hidden" id="countyHidden" value="${company[0].county}"> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="status" class="control-label x100">状态：</label>
+                        <select name="status" id="status" data-toggle="selectpicker" data-width="194" data-rule="required">
+                            <option value="">请选择</option>
+                            <option value="1">正常</option>
+                            <option value="-1">禁用</option>
+                        </select>
+                        <input type="hidden" id="statusHidden" value="${company[0].status}">
+					</td>
+				</tr>
+				<tr>
+                    <td>
+                        <label for="userMail" class="control-label x100">邮箱：</label>
+                        <input type="text" name="userMail" id="userMail" value="${company[0].userMail}" data-rule="required;email">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close">关闭</button></li>
+        <li><button type="button" onclick="saveUser();" class="btn-save">保存</button></li>
+    </ul>
+</div>
+<script>
+$(document).ready(function(){ 
+    //初始化省份列表
+    //initProvince();
+    //初始化区县
+    	initCounty(cityHidden);
+    	$("#county").val(countyHidden);
+    	$('#county').selectpicker('refresh');
+    
+    if($("#operation").val() == 'edit'){
+    	$("#city").attr('data-rule','');
+    	$("#county").attr('data-rule','');
+    	
+    	//渲染省市，县
+    	var provinceHidden = $("#provinceHidden").val();
+    	var cityHidden = $("#cityHidden").val();
+    	var countyHidden = $("#countyHidden").val();
+    	$("#province").val(provinceHidden);
+    	$('#province').selectpicker('refresh');
+    	
+    	//初始化城市
+    	//initCity(provinceHidden);
+    	//$("#city").val(cityHidden);
+    	//$('#city').selectpicker('refresh');
+    	
+    	
+    	
+    	//设置状态
+    	var statusHidden = $("#statusHidden").val();
+    	$("#status").val(statusHidden);
+
+    }
+    //限制对admin对状态的修改
+    var admin = $("#admin").val();
+    if('admin' == admin){
+        $("#userNo").attr("disabled",true);
+        $("#status").attr("disabled",true);
+    }
+}); 
+
+function saveUser(){
+    var params = $('#system_user_form_edit_id').serialize();;
+    $.ajax({
+        type: "POST", //访问WebService使用Post方式请求
+        url: "${rootpath}/System/user_edit",
+        data: params, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+        dataType: 'json',
+        success: function (result) { //回调函数，result，返回值
+            $(this).alertmsg('ok','保存成功',{mask:true});
+            //关闭当前dialog
+            $(this).dialog('closeCurrent');
+            $('#system_user_datagrid_id', window.parent.document).datagrid('refresh');
+        },
+        error:function(result){
+            $(this).alertmsg('error','保存失败',{mask:true});
+        }
+    });
+}
+function initProvince(){
+	$.ajax({
+        url: "${rootpath}/Business/getCitys",
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#province").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#province').selectpicker('refresh');
+        }
+    });
+}
+
+function initCity(value){
+	$('#city').empty();
+	$('#city').selectpicker('refresh');
+	$.ajax({
+        url: "${rootpath}/Business/getCitys?code="+value,
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#city").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#city').selectpicker('refresh');
+        }
+    });
+}
+
+function initCounty(value){
+	$('#county').empty();
+	$('#county').selectpicker('refresh');
+	$.ajax({
+        url: "${rootpath}/Business/getCitys?code=131000",
+        global: false,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function(msg) {
+        	$.each(msg, function (n, value) {  
+        		$("#county").append("<option value='"+ msg[n].xzqh_code +"'>"+ msg[n].xzqh_name +"</option>");
+            });  
+        	
+        	$('#county').selectpicker('refresh');
+        }
+    });
+}
+
+//省份变化修改城市列表
+$("#province").change(function(){
+	var value = $(this).val();
+	initCity(value);
+});
+
+//城市变化修改区县列表
+$("#city").change(function(){
+	var value = $(this).val();
+	initCounty(value);
+});
+
+</script>

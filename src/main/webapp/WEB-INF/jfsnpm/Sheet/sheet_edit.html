@@ -1,0 +1,612 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
+
+<ul class="nav nav-tabs" role="tablist">
+	<li class="active"><a href="#firstSheet" index="1" role="tab" data-toggle="tab">第一联</a></li>
+	<li><a href="#secondSheet" role="tab" data-reload="true" index="2" data-toggle="tab" data-reload="true">第二联</a></li>
+	<li><a href="#thirdSheet" role="tab" data-reload="true" index="3" data-toggle="tab">第三联</a></li>
+	<li><a href="#appendSheet" role="tab" index="4" data-toggle="tab">附件</a></li>
+</ul>
+
+<div class="tab-content">
+
+	<div class="tab-pane fade active in" id="firstSheet">
+		<form id="firstSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="firstSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+				<tr>
+					<!--<td>
+						<label for="j_sheet_info_num" class="control-label x86">信息录入单号：</label>
+						<input type="text" name="sheet.infoNum" id="j_sheet_info_num" value="WDL20160525001" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>-->
+					<td >
+						<label class="control-label x85">录入日期：</label>
+						<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" value="${sheet.linked_list_create_time}" name="linked_list_create_time"  data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+					</td>
+					<td colspan="2">
+						<label class="control-label x86">危险废物类别：</label>
+						<!--<input type="text" value="${sheet.linked_list_num}" name="linked_list_num" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>-->
+						<select id="dangerous_category_id" name="dangerous_category" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">产生单位：</label>
+						<select id="produce_company_id" onfocus="test();"  onchange="changeProduceCompanyInfo();" name="produce_company_id" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+							<option value="">请选择产生单位</option>
+						</select>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.produce_phone}" name="produce_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.produce_stamp}" name="produce_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.produce_address}" name="produce_address" size="15" class="form-control ok" aria-required="true" style="width: 100px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">运输单位：</label>
+						<select id="transport_company_id" name="transport_company_id" onchange="changeTransportCompanyInfo();" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+							<option value="">全部</option>
+						</select>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.transport_phone}" name="transport_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.transport_stamp}" name="transport_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.transport_address}" name="transport_address" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">接受单位：</label>
+						<select id="receive_company_id" name="receive_company_id" onchange="changeReceiveCompanyInfo();" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+							<option value="0">请选择接受单位</option>
+						</select>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;电&nbsp;&nbsp话&nbsp;&nbsp;：</label>
+						<input type="text" readonly="true" value="${sheet.receive_phone}" name="receive_phone" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">邮编：</label>
+						<input type="text" readonly="true" value="${sheet.receive_stamp}" name="receive_stamp" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<label class="control-label x85">通信地址：</label>
+						<input type="text" readonly="true" value="${sheet.receive_address}" name="receive_address" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">废物名称：</label>
+						<select id="rubbish_name" name="rubbish_name" onchange="changeRubbishInfo();" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+						</select>
+					</td>
+					<td>
+						<label class="control-label x86">类别编号：</label>
+						<input type="text" value="${sheet.rubbish_type_num}" name="rubbish_type_num" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">&nbsp;&nbsp;数量(kg)：</label>
+						<input type="text" value="${sheet.rubbish_num}" name="rubbish_num" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">废物特性：</label>
+						<input type="text" value="${sheet.rubbish_features}" name="rubbish_features" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">&nbsp;&nbsp;形&nbsp;&nbsp态&nbsp;&nbsp;：</label>
+						<input type="text" value="${sheet.rubbish_pattern}" name="rubbish_pattern" size="15" class="form-control ok" aria-required="true" style="width: 400px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">包装方式：</label>
+						<select name="rubbish_package_type" data-toggle="selectpicker" aria-required="true" class="show-tick" style="display: none;">
+							<option value="">--请选择--</option>
+							<option value="桶装">桶装</option>
+							<option value="200L铁桶">200L铁桶</option>
+							<option value="1000周转罐">1000周转罐</option>
+							<option value="吨罐">吨罐</option>
+							<option value="散装">散装</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label class="control-label x85" name="transport_destination">外运目的：</label>
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="transport_destination" id="destination-radio1" data-toggle="icheck" value="中转贮存" data-label="中转贮存">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="transport_destination" id="destination-radio2" data-toggle="icheck" value="利用" data-label="利用">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="transport_destination" id="destination-radio3" data-toggle="icheck" value="处理" data-label="处理">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="transport_destination" id="destination-radio4" data-toggle="icheck" value="处置" data-label="处置">
+					</td>
+					<td>
+						<label class="control-label x86">主要危险成分：</label>
+						<input type="text" value="${sheet.main_dangerous}" name="main_dangerous"  size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x85">禁忌与应急措施：</label>
+						<input type="text" value="${sheet.measures_for_emergency}" name="measures_for_emergency" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x86">发运人：</label>
+						<input type="text" value="${sheet.shipper}" name="shipper" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">运达地：</label>
+						<input type="text" value="${sheet.destination}" name="destination" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<label  class="control-label x85">转移时间：</label>
+						<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" value="${sheet.transport_begin_time}" name="transport_begin_time" data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<!----------------------------------第二联------------------------------>
+	<!----------------------------------第二联------------------------------>
+	<!----------------------------------第二联------------------------------>
+	<div class="tab-pane fade in" id="secondSheet">
+		<form id="secondSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="secondSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+			<tr>
+				<td>
+					<label class="control-label x85">第一承运人：</label>
+					<input type="text" name="first_carrier" value="${sheet.first_carrier}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style=""></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输日期：</label>
+					<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" name="first_carrier_transport_date" value="${sheet.first_carrier_transport_date}" data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+				</td>
+				<td>
+					<label class="control-label x85">车(船)型：</label>
+					<input type="text" name="first_vehicle_type" value="${sheet.first_vehicle_type}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label class="control-label x85">牌号：</label>
+					<input type="text" name="first_car_num" value="${sheet.first_car_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x86">道路运输证号：</label>
+					<input type="text" name="first_road_transport_num" value="${sheet.first_road_transport_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输起点：</label>
+					<input type="text" name="first_start_point" value="${sheet.first_start_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">经由地：</label>
+					<input type="text" name="first_via_ground" value="${sheet.first_via_ground}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输终点：</label>
+					<input type="text" name="first_transport_end_point" value="${sheet.first_transport_end_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输人签字：</label>
+					<input type="text" name="first_transport_name" value="${sheet.first_transport_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">第二承运人：</label>
+					<input type="text" name="second_carrier" value="${sheet.second_carrier}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输日期：</label>
+					<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" name="second_carrier_transport_date" value="${sheet.second_carrier_transport_date}"  data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+				</td>
+				<td>
+					<label class="control-label x85">车(船)型：</label>
+					<input type="text" name="second_vehicle_type" value="${sheet.second_vehicle_type}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label class="control-label x85">牌号：</label>
+					<input type="text" name="second_car_num" value="${sheet.second_car_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x86">道路运输证号：</label>
+					<input type="text" name="second_road_transport_num" value="${sheet.second_road_transport_num}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输起点：</label>
+					<input type="text" name="second_start_point" value="${sheet.second_start_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label class="control-label x85">经由地：</label>
+					<input type="text" name="second_via_ground" value="${sheet.second_via_ground}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输终点：</label>
+					<input type="text" name="second_transport_end_point" value="${sheet.second_transport_end_point}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+				<td>
+					<label class="control-label x85">运输人签字：</label>
+					<input type="text" name="second_transport_name" value="${sheet.second_transport_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+			</form>
+	</div>
+
+	<!----------------------------------第3联------------------------------>
+	<!----------------------------------第3联------------------------------>
+	<!----------------------------------第3联------------------------------>
+	<div class="tab-pane fade" id="thirdSheet">
+		<form id="thirdSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+			<input type="hidden" id="thirdSheetId" name="id" value="${sheet.id}"/>
+			<table class="table table-condensed table-hover" width="100%">
+				<tbody>
+				<tr>
+					<td>
+						<label class="control-label x86">经营许可证号：</label>
+						<input type="text" name="business_license_no" value="${sheet.business_license_no}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">接收人：</label>
+						<input type="text" name="receive_person_name" value="${sheet.receive_person_name}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">接收日期：</label>
+						<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" name="company_receive_date" value="${sheet.company_receive_date}" data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<label class="control-label x86">废物处置方式：</label>
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="disposal_metohod" id="disposal_metohod_1" data-toggle="icheck" value="利用" data-label="利用">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="disposal_metohod" id="disposal_metohod_2" data-toggle="icheck" value="贮存" data-label="贮存">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="disposal_metohod" id="disposal_metohod_3" data-toggle="icheck" value="焚烧" data-label="焚烧">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="disposal_metohod" id="disposal_metohod_4" data-toggle="icheck" value="安全填埋" data-label="安全填埋">
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="disposal_metohod" id="disposal_metohod_5" data-toggle="icheck" value="其他" data-label="其他">
+					</td>
+					<td>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="control-label x86">单位负责人签字：</label>
+						<input type="text" name="signature_person" value="${sheet.signature_person}" size="15" class="form-control ok" aria-required="true" style="width: 150px;"><span class="msg-box n-right" style="" for="j_custom_name"></span>
+					</td>
+					<td>
+						<label class="control-label x85">单位盖章：</label>
+					</td>
+					<td>
+						<label class="control-label x85">接收日期：</label>
+						<span class="wrap_bjui_btn_box" style="position: relative; display: inline-block;"><input type="text" name="unit_receive_date" value="${sheet.unit_receive_date}"  data-toggle="datepicker" size="15" class="form-control" aria-required="true" style="padding-right: 15px; width: 150px;"><a class="bjui-lookup" href="javascript:;" data-toggle="datepickerbtn" style="height: 22px; line-height: 22px;"><i class="fa fa-calendar"></i></a></span>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<!----------------------------------附件------------------------------>
+	<!----------------------------------附件------------------------------>
+	<!----------------------------------附件------------------------------>
+	<div class="tab-pane fade " id="appendSheet">
+		<div>
+			<form id="fourthSheetForm" action="${rootpath}/Sheet/linkedListEdit" data-toggle="validate">
+				<input type="hidden" id="fourthSheetId" name="id" value="${sheet.id}"/>
+				<label class="control-label x85">选择附件：</label>
+				<div id="sheetAttachmentId" style="display: inline-block; vertical-align: middle;">
+					<div data-toggle="upload"
+						 data-uploader="${rootpath}/Sheet/uploadAttachment"
+						 data-file-size-limit="1024000000"
+						 data-file-obj-name="attachment"
+						 data-file-type-exts="*.jpg;*.png;*.gif;*.jpeg"
+						 data-multi="true"
+						 data-on-upload-success="pic_upload_success"
+						 data-icon="cloud-upload"></div>
+					<input type="hidden" name="attachment_name" value="${sheet.attachment_name}" id="attachment_name_id">
+					<input type="hidden" name="attachment_url" value="${sheet.attachment_url}">
+				</div>
+				<span id="j_custom_span_pic"></span>
+			</form>
+
+		</div>
+	</div>
+	<div class="bjui-pageFooter" style="padding-right: 320px;">
+		<ul>
+			<li><button type="button" class="btn btn-close" data-icon="close"><i class="fa fa-close"></i> 关闭</button></li>
+			<li><button type="button" class="btn btn-default" onclick="saveSheet();" data-icon="save"><i class="fa fa-save"></i> 保存</button></li>
+		</ul>
+	</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+	var sheet_num = '1';
+	$(function(){
+		$('.nav-tabs li a').click(function(){
+			sheet_num = $(this).attr("index");
+			//如果页签为第四页,且文件url不为空
+			if(sheet_num == 4){
+				var attachmentName = $('input[name="attachment_name"]').val();
+				var attachmentUrl = $('input[name="attachment_url"]').val();
+				if(attachmentName != ''&& attachmentName != null){
+					$('#j_custom_span_pic').html('已上传图片：'+attachmentName+'&nbsp;&nbsp;<a href="${rootpath}/Sheet/attachmentOverview?url='+attachmentUrl+'" class="btn btn-default" data-toggle="dialog" data-width="600" data-height="600" data-id="dialog">附件预览</a>')
+				}
+			}
+		})
+
+	});
+	//上传图片后的回调
+	function pic_upload_success(file,result){
+		var obj = $.parseJSON(result);
+		if(obj.status == 200){
+			var file = obj.result;
+			$("input[name='attachment_name']").val(file.fileName);
+			$("input[name='attachment_url']").val(file.url);
+			$('#j_custom_span_pic').html('已上传图片：'+file.fileName+'&nbsp;&nbsp;<a href="${rootpath}/Sheet/attachmentOverview?url='+file.url+'" class="btn btn-default" data-toggle="dialog" data-width="600" data-height="600" data-id="dialog">附件预览</a>')
+		}
+
+	}
+	/**
+	 * 新增和修改联单
+	 */
+	function saveSheet(){
+		var params = null;
+		switch (sheet_num){
+			case '1':
+				params = $('#firstSheetForm').serialize();
+				break;
+			case '2':
+				params = $('#secondSheetForm').serialize();
+				break;
+			case '3':
+				params = $('#thirdSheetForm').serialize();
+				break;
+			case '4':
+				params = $('#fourthSheetForm').serialize();
+				break;
+		}
+		if(null == params){
+			return;
+		}
+		//自动将form表单封装成json
+		$.ajax({
+			type: "POST", //访问WebService使用Post方式请求
+			url: "${rootpath}/Sheet/linkedListEdit",
+			data: params, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				if(result.status == 200){
+					$(this).alertmsg('ok','保存成功',{mask:true});
+//				$.CurrentDialog.closeCurrent();
+					//关闭当前dialog
+					$(this).dialog('closeCurrent');
+					$('#sheet_linked_list_datagrid_id', window.parent.document).datagrid('refresh');
+				}else{
+					$(this).alertmsg('error','保存失败',{mask:true});
+				}
+
+			},
+			error:function(result){
+				alert(result.result);
+			}
+		});
+	}
+	//获取产废单位信息
+	function changeProduceCompanyInfo(){
+		var companyId = $('#produce_company_id').val();
+		$.ajax({
+			type: "GET",
+			url: "${rootpath}/Sheet/getCompanyInfoById",
+			data: {
+				companyId:companyId
+			}, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				if(result.status == 200){
+					var json = result.result;
+					//电话
+					$("input[name='produce_phone']").val(json.telephone);
+					//邮编
+					$("input[name='produce_stamp']").val(json.postcode);
+					//通信地址
+					$("input[name='produce_address']").val(json.address);
+				}
+			}
+		});
+	}
+	//获取运输单位信息
+	function changeTransportCompanyInfo(){
+		var companyId = $('#transport_company_id').val();
+		$.ajax({
+			type: "GET",
+			url: "${rootpath}/Sheet/getCompanyInfoById",
+			data: {
+				companyId:companyId
+			}, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				if(result.status == 200){
+					var json = result.result;
+					//电话
+					$("input[name='transport_phone']").val(json.telephone);
+					//邮编
+					$("input[name='transport_stamp']").val(json.postcode);
+					//通信地址
+					$("input[name='transport_address']").val(json.address);
+				}
+			}
+		});
+	}
+	//获取运输单位信息
+	function changeReceiveCompanyInfo(){
+		var companyId = $('#receive_company_id').val();
+		$.ajax({
+			type: "GET",
+			url: "${rootpath}/Sheet/getCompanyInfoById",
+			data: {
+				companyId:companyId
+			}, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				if(result.status == 200){
+					var json = result.result;
+					//电话
+					$("input[name='receive_phone']").val(json.telephone);
+					//邮编
+					$("input[name='receive_stamp']").val(json.postcode);
+					//通信地址
+					$("input[name='receive_address']").val(json.address);
+				}
+			}
+		});
+	}
+
+	//获取废弃物信息
+	function changeRubbishInfo(){
+		var rubbishId = $('#rubbish_name').val();
+		$.ajax({
+			type: "GET",
+			url: "${rootpath}/Sheet/getRubbishById",
+			data: {
+				rubbishId:rubbishId
+			}, //这里是要传递的参数，格式为 data: "{paraName:paraValue}",下面将会看到
+			dataType: 'json',
+			success: function (result) { //回调函数，result，返回值
+				if(result.status == 200){
+					var json = result.result;
+					//类别编号
+					$("input[name='rubbish_type_num']").val(json.rubbish_category);
+					//废物特性
+					$("input[name='rubbish_features']").val(json.rubbish_property);
+					//形态
+					$("input[name='rubbish_pattern']").val(json.rubbish_status=='0'?"液体":"固体");
+					//包装方式
+					$("input[name='rubbish_package_type']").val(json.rubbish_package_type);
+				}
+			}
+		});
+	}
+		//初始化selectpicker
+		$('.selectpicker').selectpicker({
+			style: 'btn-info',
+			size: 4
+		});
+		//初始化商户名称
+		$.ajax({
+			type : 'GET',
+			url : '${rootpath}/Sheet/getCompanyCombo',
+			dateType : 'json',
+			data : '',
+			success: function(msg){
+				if(msg.status == 200){
+					var tempAjax = "<option value=''>请选择企业</option>";
+					$.each(msg.result,function(i,n){
+						tempAjax += "<option value='"+ n.id+"'>"+ n.name+"</option>";
+					});
+					//产废单位-----
+					$("#produce_company_id").empty();
+					$("#produce_company_id").append(tempAjax);
+					//更新内容刷新到相应的位置
+					$('#produce_company_id').selectpicker('render');
+					$('#produce_company_id').selectpicker('refresh');
+
+					//运输单位
+					$("#transport_company_id").empty();
+					$("#transport_company_id").append(tempAjax);
+					$('#transport_company_id').selectpicker('render');
+					$('#transport_company_id').selectpicker('refresh');
+
+					//接受单位
+					$("#receive_company_id").empty();
+					$("#receive_company_id").append(tempAjax);
+					$('#receive_company_id').selectpicker('render');
+					$('#receive_company_id').selectpicker('refresh');
+				}
+
+			}
+		});
+
+	//初始化废弃物
+	$.ajax({
+		type : 'GET',
+		url : '${rootpath}/Sheet/getRubbishDangerous',
+		dateType : 'json',
+		data : '',
+		success: function(msg){
+			if(msg.status == 200){
+				var tempAjax = "<option value=''>请选择废弃物</option>";
+				$.each(msg.result,function(i,n){
+					tempAjax += "<option value='"+ n.id+"'>"+ n.rubbish_name+"</option>";
+				});
+				//产废单位-----
+				$("#rubbish_name").empty();
+				$("#rubbish_name").append(tempAjax);
+				//更新内容刷新到相应的位置
+				$('#rubbish_name').selectpicker('render');
+				$('#rubbish_name').selectpicker('refresh');
+			}
+
+		}
+	});
+	//初始化危险废物类别
+	$.ajax({
+		type : 'GET',
+		url : '${rootpath}/Sheet/getDangerousCategory',
+		dateType : 'json',
+		data : '',
+		success: function(msg){
+			if(msg.status == 200){
+				var tempAjax = "";
+				$.each(msg.result,function(i,n){
+					tempAjax += "<option value='"+ n.code+"'>"+ n.code+"</option>";
+				});
+				$("#dangerous_category_id").empty();
+				$("#dangerous_category_id").append(tempAjax);
+				//更新内容刷新到相应的位置
+				$('#dangerous_category_id').selectpicker('render');
+				$('#dangerous_category_id').selectpicker('refresh');
+			}
+
+		}
+	});
+	function test(){
+		alert(222);
+	}
+</script>

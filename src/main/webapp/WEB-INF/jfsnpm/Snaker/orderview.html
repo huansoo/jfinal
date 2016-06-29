@@ -1,0 +1,39 @@
+<#assign snakerflow=tool.getuuid()>
+<#assign tipid=tool.getuuid()>
+<script type="text/javascript">
+function processviewinit(){
+	var json="${process!}";
+	var jsonactive="${active!}";
+	var model;
+	var modelactive;
+	if(json) {
+		//json.replace(new RegExp("@@","gm"), "\"")
+		model=eval("(" + json + ")");
+	} else {
+		model="";
+	}
+	if(jsonactive) {
+		//json.replace(new RegExp("@@","gm"), "\"")
+		modelactive=eval("(" + jsonactive + ")");
+	} else {
+		modelactive="";
+	}
+	$('#${snakerflow}').snakerflow($.extend(true,{
+			basePath : "${rootpath}/snaker/",
+	        ctxPath : "${rootpath}",
+	        orderId	: "${orderid!}",
+	        tipId : "${tipid!}",
+			restore : model,
+			editable : false,
+			dragable : false
+		},
+		eval("({'activeRects':{'rects':''},'historyRects':{'rects':''}})"),
+		modelactive
+	));
+}
+processviewinit();
+</script>
+<div class="bjui-pageContent">
+	<div class="bjui-layout" style="position: absolute;top: 10px;left: 10px;" id="${tipid}"></div>
+	<div id="${snakerflow}"></div>
+</div>
